@@ -1,13 +1,20 @@
 import React from 'react'
-import { Nav, Wrapper } from '../components'
+import { Container, Logo, Nav, WrapperBody, WrapperHead } from '../components'
 
 function Layout({ children }) {
   return (
     <div>
-      <Nav>
-        <h1>Tic Tac Toe</h1>
-      </Nav>
-      <Wrapper>{children}</Wrapper>
+      <WrapperHead>
+        <Container>
+          <Nav>
+            <Logo>Tic Tac Toe</Logo>
+            <p>Log(IN/OUT)</p>
+          </Nav>
+        </Container>
+      </WrapperHead>
+      <WrapperBody>
+        <Container>{children}</Container>
+      </WrapperBody>
     </div>
   )
 }

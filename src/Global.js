@@ -20,12 +20,10 @@ const Global = createGlobalStyle`
     box-sizing: border-box;
   }
   h1 {
-    color: #38bec9;
     font-size: 3rem;
     line-height: 1.1;
   }
   h2 {
-    color: #38bec9;
     font-size: 2.5rem;
     line-height: 1.1;
   }
