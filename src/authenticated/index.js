@@ -2,10 +2,9 @@ import React from 'react'
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom'
 
 import { Header, Main } from '../shared/components'
-import { Landing, Login, Register } from './components'
 import Layout from '../shared/layout'
 
-function UnAuthenticated() {
+function Authenticated() {
   return (
     <BrowserRouter>
       <Layout>
@@ -15,17 +14,11 @@ function UnAuthenticated() {
         </Header>
         <Main>
           <Switch>
-            <Route exact path="/">
-              <Landing />
-            </Route>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route path="/register">
-              <Register />
+            <Route exact path="/dashboard">
+              <p>Dashboard</p>
             </Route>
             <Route>
-              <Redirect to="/" />
+              <Redirect to="/dashboard" />
             </Route>
           </Switch>
         </Main>
@@ -34,4 +27,4 @@ function UnAuthenticated() {
   )
 }
 
-export default UnAuthenticated
+export default Authenticated

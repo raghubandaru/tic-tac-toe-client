@@ -1,13 +1,18 @@
 import React, { lazy } from 'react'
 
-import Layout from './shared/layout'
 import { useUser } from './shared/context/User'
 
 const UnAuthenticated = lazy(() => import('./unauthenticated'))
+const Authenticated = lazy(() => import('./authenticated'))
 
 function App() {
   const { user } = useUser()
-  return <Layout>{user ? <p>Dashboard</p> : <UnAuthenticated />}</Layout>
+
+  if (user) {
+    return <Authenticated />
+  } else {
+    return <UnAuthenticated />
+  }
 }
 
 export default App
