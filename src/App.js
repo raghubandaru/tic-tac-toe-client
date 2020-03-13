@@ -1,14 +1,13 @@
-import React from 'react'
+import React, { lazy } from 'react'
 
-import Layout from '../shared/layout'
-import UnAuthenticated from './unauthenticated'
+import Layout from './shared/layout'
+import { useUser } from './shared/context/User'
+
+const UnAuthenticated = lazy(() => import('./unauthenticated'))
 
 function App() {
-  return (
-    <Layout>
-      <UnAuthenticated />
-    </Layout>
-  )
+  const { user } = useUser()
+  return <Layout>{user ? <p>Dashboard</p> : <UnAuthenticated />}</Layout>
 }
 
 export default App

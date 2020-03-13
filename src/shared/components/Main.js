@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { below } from '../../utilities/Breakpoints'
+import { below } from '../utilities/Breakpoints'
 
 export const Main = styled.main`
   padding: 5rem 8rem;

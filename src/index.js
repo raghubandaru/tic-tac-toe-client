@@ -1,13 +1,19 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
+import 'react-image-crop/dist/ReactCrop.css'
 import Global from './Global'
+import { UserProvider } from './shared/context/User'
 
 ReactDOM.render(
   <>
     <Global />
-    <App />
+    <UserProvider>
+      <Suspense fallback="Loading...">
+        <App />
+      </Suspense>
+    </UserProvider>
   </>,
   document.getElementById('root')
 )
