@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useRef } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
+import 'styled-components/macro'
 import { useDropzone } from 'react-dropzone'
 import ReactCrop from 'react-image-crop'
 import axios from 'axios'
@@ -12,6 +13,11 @@ import {
 } from '../../shared/helpers/image'
 import { getAccessToken } from '../../shared/helpers/token'
 import { useUser } from '../../shared/context/User'
+
+const StyledReactCrop = styled(ReactCrop)`
+  margin: 0 auto;
+  margin-bottom: 2rem;
+`
 
 const DragnDrop = styled.div`
   flex-grow: 1;
@@ -107,18 +113,19 @@ function Upload({ userData }) {
     <>
       {imgSrc !== null ? (
         <UploadContainer>
-          <ReactCrop
+          <StyledReactCrop
             src={imgSrc}
             crop={crop}
             onChange={handleOnCropChange}
             onImageLoaded={handleImageLoaded}
             onComplete={handleOnCropComplete}
-            style={{ margin: '0 auto', marginBottom: 20 }}
           />
           <div>
             <canvas
               ref={imagePreviewCanvasRef}
-              style={{ display: 'none' }}
+              css={css`
+                display: none;
+              `}
             ></canvas>
             <ButtonGroup>
               <Button secondary onClick={handleClearToDefault}>
@@ -136,7 +143,11 @@ function Upload({ userData }) {
             <input {...getInputProps()} multiple={false} accept="image/*" />
             {isDragActive ? <p>Drop the image here</p> : <p>Upload Image</p>}
           </DragnDrop>
-          <div style={{ textAlign: 'center' }}>
+          <div
+            css={css`
+              text-align: center;
+            `}
+          >
             <Button onClick={handleSkip}>Skip</Button>
           </div>
         </UploadContainer>
