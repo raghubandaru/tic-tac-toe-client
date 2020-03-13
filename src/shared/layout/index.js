@@ -1,5 +1,4 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 
 import { Container, Logo, Nav, WrapperBody, WrapperHead } from '../components'
@@ -9,7 +8,6 @@ import { Button } from '../elements'
 
 function Layout({ children }) {
   const { user, setUser } = useUser()
-  const { push } = useHistory()
 
   const handleLogout = () => {
     const config = {
@@ -22,9 +20,8 @@ function Layout({ children }) {
     }
 
     axios(config).then(() => {
-      setUser(null)
       setAccessToken('')
-      push('/login')
+      setUser(null)
     })
   }
 
