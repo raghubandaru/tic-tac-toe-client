@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom'
 
 import { Header, Main } from '../shared/components'
 import Layout from '../shared/layout'
+import { Dashboard, Gameplay } from './components'
 
 function Authenticated() {
   return (
@@ -15,7 +16,10 @@ function Authenticated() {
         <Main>
           <Switch>
             <Route exact path="/dashboard">
-              <p>Dashboard</p>
+              <Dashboard />
+            </Route>
+            <Route exact path="/dashboard/:id">
+              <Gameplay />
             </Route>
             <Route>
               <Redirect to="/dashboard" />
