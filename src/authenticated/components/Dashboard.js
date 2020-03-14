@@ -46,7 +46,14 @@ function Dashboard() {
   }
 
   return (
-    <div>
+    <div
+      css={css`
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        height: calc(60vh - 10rem);
+      `}
+    >
       <form onSubmit={handleJoinGame}>
         <FormGroup>
           <Label htmlFor="joinGame">Invited by someone?</Label>
@@ -67,7 +74,6 @@ function Dashboard() {
         css={css`
           border: none;
           border-top: 2px dashed #102a43;
-          margin: 2rem 0;
         `}
       />
       <div>
