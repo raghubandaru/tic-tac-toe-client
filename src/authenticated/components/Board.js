@@ -1,61 +1,51 @@
 import React from 'react'
 import styled from 'styled-components'
-import 'styled-components/macro'
 
-import { Button } from '../../shared/elements'
+import Square from './Square'
 
 const StyledBoard = styled(Board)`
   display: flex;
   flex-direction: column;
+  margin: 2rem 0;
   > div {
     display: flex;
-    ${Button} {
-      padding: 1rem;
-      margin: 0.5rem;
-      background: #102a43;
-      width: 8rem;
-      span {
-        font-size: 3rem;
-      }
-    }
   }
 `
 
-function Board({ className }) {
+function Board({
+  board,
+  className,
+  disabled,
+  handleBoardClick,
+  winningIndexes
+}) {
+  const renderSquare = i => {
+    return (
+      <Square
+        disabled={disabled}
+        isWinningIndex={winningIndexes !== null && winningIndexes.includes(i)}
+        handleBoardClick={() => handleBoardClick(i)}
+        value={board[i]}
+      />
+    )
+  }
+
   return (
     <div className={className}>
       <div>
-        <Button>
-          <span>X</span>
-        </Button>
-        <Button>
-          <span>X</span>
-        </Button>
-        <Button>
-          <span>X</span>
-        </Button>
+        {renderSquare(0)}
+        {renderSquare(1)}
+        {renderSquare(2)}
       </div>
       <div>
-        <Button>
-          <span>X</span>
-        </Button>
-        <Button>
-          <span>X</span>
-        </Button>
-        <Button>
-          <span>X</span>
-        </Button>
+        {renderSquare(3)}
+        {renderSquare(4)}
+        {renderSquare(5)}
       </div>
       <div>
-        <Button>
-          <span>X</span>
-        </Button>
-        <Button>
-          <span>X</span>
-        </Button>
-        <Button>
-          <span>X</span>
-        </Button>
+        {renderSquare(6)}
+        {renderSquare(7)}
+        {renderSquare(8)}
       </div>
     </div>
   )

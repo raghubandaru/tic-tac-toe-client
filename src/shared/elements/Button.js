@@ -11,6 +11,7 @@ export const Button = styled.button`
   line-height: inherit;
   padding: 1rem 2rem;
   text-decoration: none;
+  text-align: center;
   width: ${props => props.width && `${props.width}px`};
 
   ${props =>
@@ -38,7 +39,7 @@ export const Button = styled.button`
   ${props =>
     props.disabled &&
     css`
-      opacity: 0.5;
+      opacity: 0.8;
       cursor: not-allowed;
     `}
 `

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import { css } from 'styled-components'
 import 'styled-components/macro'
 
@@ -8,6 +8,7 @@ import { Button, FormGroup, Input, Label } from '../../shared/elements'
 import { getAccessToken } from '../../shared/helpers/token'
 
 function Dashboard() {
+  const [newGame, setNewGame] = useState('')
   const [joinGame, setJoinGame] = useState('')
   const history = useHistory()
 
@@ -40,7 +41,8 @@ function Dashboard() {
 
     axios(config)
       .then(({ data: { game } }) => {
-        history.push(`/dashboard/${game._id}`)
+        // history.push(`/dashboard/${game._id}`)
+        setNewGame(game)
       })
       .catch(error => console.log(error))
   }
@@ -77,12 +79,31 @@ function Dashboard() {
         `}
       />
       <div>
-        <FormGroup>
-          <Label>Wanna Start a game? click below</Label>
-          <Button primary onClick={handleCreateGame}>
-            Create Game
-          </Button>
-        </FormGroup>
+        {newGame ? (
+          <FormGroup>
+            <Label>
+              Share this code:{' '}
+              <span
+                css={css`
+                  background: #102a43;
+                  padding: 0 2rem;
+                `}
+              >
+                {newGame._id}
+              </span>
+            </Label>
+            <Button primary as={Link} to={`/dashboard/${newGame._id}`}>
+              Go to game
+            </Button>
+          </FormGroup>
+        ) : (
+          <FormGroup>
+            <Label>Wanna Start a game? click below</Label>
+            <Button primary onClick={handleCreateGame}>
+              Create Game
+            </Button>
+          </FormGroup>
+        )}
       </div>
     </div>
   )
