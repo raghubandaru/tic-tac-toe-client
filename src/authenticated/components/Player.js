@@ -7,14 +7,14 @@ import 'styled-components/macro'
 import { getAccessToken } from '../../shared/helpers/token'
 import { below } from '../../shared/utilities/Breakpoints'
 
-const Statistic = styled.span`
-  font-size: 1.3rem;
-  letter-spacing: 0.5rem;
-`
-const Statistics = styled.div`
-  display: flex;
-  justify-content: space-around;
-`
+// const Statistic = styled.span`
+//   font-size: 1.3rem;
+//   letter-spacing: 0.5rem;
+// `
+// const Statistics = styled.div`
+//   display: flex;
+//   justify-content: space-around;
+// `
 
 const StyledPlayer = styled(Player)`
   display: flex;
@@ -98,11 +98,11 @@ function Player({ className, reverse, playerId, winner }) {
         `}
       >
         <h2>{player.name}</h2>
-        <Statistics>
+        {/* <Statistics>
           <Statistic>2W</Statistic>
           <Statistic>4L</Statistic>
           <Statistic>3D</Statistic>
-        </Statistics>
+        </Statistics> */}
       </div>
     </div>
   )

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import axios from 'axios'
 import { useHistory, Link } from 'react-router-dom'
 import { css } from 'styled-components'
@@ -10,6 +10,10 @@ import { getAccessToken } from '../../shared/helpers/token'
 function Dashboard() {
   const [newGame, setNewGame] = useState('')
   const [joinGame, setJoinGame] = useState('')
+  const [copySuccess, setCopySuccess] = useState('Copy code')
+
+  const clipRef = useRef(null)
+
   const history = useHistory()
 
   const handleJoinGame = e => {
@@ -47,6 +51,13 @@ function Dashboard() {
       .catch(error => console.log(error))
   }
 
+  const copyToClipboard = e => {
+    clipRef.current.select()
+    document.execCommand('copy')
+    e.target.focus()
+    setCopySuccess('Copied!')
+  }
+
   return (
     <div
       css={css`
@@ -80,22 +91,27 @@ function Dashboard() {
       />
       <div>
         {newGame ? (
-          <FormGroup>
-            <Label>
-              Share this code:{' '}
-              <span
-                css={css`
-                  background: #102a43;
-                  padding: 0 2rem;
-                `}
-              >
-                {newGame._id}
-              </span>
-            </Label>
-            <Button primary as={Link} to={`/dashboard/${newGame._id}`}>
-              Go to game
-            </Button>
-          </FormGroup>
+          <>
+            <FormGroup>
+              <Label htmlFor="clip" />
+              <Input
+                type="text"
+                name="clip"
+                defaultValue={newGame._id}
+                ref={clipRef}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Button secondary onClick={copyToClipboard}>
+                {copySuccess}
+              </Button>
+            </FormGroup>
+            <FormGroup>
+              <Button primary as={Link} to={`/dashboard/${newGame._id}`}>
+                Go to game
+              </Button>
+            </FormGroup>
+          </>
         ) : (
           <FormGroup>
             <Label>Wanna Start a game? click below</Label>
