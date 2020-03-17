@@ -97,8 +97,9 @@ function Dashboard() {
               <Input
                 type="text"
                 name="clip"
-                defaultValue={newGame._id}
+                value={newGame._id}
                 ref={clipRef}
+                readOnly
               />
             </FormGroup>
             <FormGroup>
