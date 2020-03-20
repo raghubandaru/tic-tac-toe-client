@@ -61,21 +61,21 @@ function Player({ className, reverse, playerId, playerStatus }) {
     }
 
     const config2 = {
-      url: `${process.env.REACT_APP_API_DOMAIN}/games?user=${playerId}&draw=true`,
+      url: `${process.env.REACT_APP_API_DOMAIN}/games/stats?user=${playerId}&draw=true`,
       headers: {
         Authorization: `Bearer ${getAccessToken()}`
       }
     }
 
     const config3 = {
-      url: `${process.env.REACT_APP_API_DOMAIN}/games?user=${playerId}&winner=true`,
+      url: `${process.env.REACT_APP_API_DOMAIN}/games/stats?user=${playerId}&winner=true`,
       headers: {
         Authorization: `Bearer ${getAccessToken()}`
       }
     }
 
     const config4 = {
-      url: `${process.env.REACT_APP_API_DOMAIN}/games?user=${playerId}`,
+      url: `${process.env.REACT_APP_API_DOMAIN}/games/stats?user=${playerId}`,
       headers: {
         Authorization: `Bearer ${getAccessToken()}`
       }
