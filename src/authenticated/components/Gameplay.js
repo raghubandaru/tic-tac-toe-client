@@ -44,9 +44,13 @@ function Gameplay({ className }) {
       setGame(updatedGame)
     })
 
+    socket.on('disconnect_update', ({ updatedGame }) => {
+      setGame(updatedGame)
+    })
+
     return () => {
-      console.log('disconnected', socket.id)
-      socket.emit('disconnect')
+      console.log(id)
+      socket.emit('disconnect', { gameId: id })
 
       socket.off()
     }
@@ -70,6 +74,7 @@ function Gameplay({ className }) {
           isTurn={game.player1 === playerTurn && game.status === 'active'}
           isWinner={game.winner === game.player1}
           playerId={game.player1}
+          playerStatus={game.player1Status}
         />
         <StyledBoard
           handleBoardClick={handleBoardClick}
@@ -82,6 +87,7 @@ function Gameplay({ className }) {
             isTurn={game.player2 === playerTurn && game.status === 'active'}
             isWinner={game.winner === game.player2}
             playerId={game.player2}
+            playerStatus={game.player2Status}
             reverse={true}
           />
         ) : (
