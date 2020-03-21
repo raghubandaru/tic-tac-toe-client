@@ -11,6 +11,7 @@ const Statistic = styled.span`
   font-size: 1.3rem;
   letter-spacing: 0.5rem;
 `
+
 const Statistics = styled.div`
   display: flex;
   justify-content: space-around;
@@ -33,6 +34,12 @@ const StyledPlayer = styled(Player)`
     css`
       border: 2px solid #54d1db;
     `}
+
+    ${props =>
+      props.playerStatus === 'disconnected' &&
+      css`
+        border: 2px solid red;
+      `}
 
   img {
     filter: grayscale(100%);
@@ -100,47 +107,50 @@ function Player({ className, reverse, playerId, playerStatus }) {
     return 'Loading...'
   }
 
-  if (playerStatus === 'disconnected') {
-    return <div>Player disconnected</div>
-  }
-
   return (
-    playerStatus === 'connected' && (
-      <div className={className}>
-        <div
-          css={css`
-            width: 7.5rem;
-            height: 7.5rem;
-            border-radius: 50%;
-            overflow: hidden;
-            background: #b6f8fd;
-            margin-right: ${reverse ? '0px' : '1rem'};
-            margin-left: ${reverse ? '1rem' : '0px'};
-          `}
-        >
-          <img
-            src={`http://res.cloudinary.com/raghubandaru/image/upload/v${player.avatar}`}
-            alt="Avatar"
-            width="100%"
-          />
+    <div className={className}>
+      {playerStatus === 'disconnected' && (
+        <div>
+          <h2>Disconnected</h2>
         </div>
-        <div
-          css={css`
-            align-self: center;
-            h2 {
-              margin-bottom: 1rem;
-            }
-          `}
-        >
-          <h2>{player.name}</h2>
-          <Statistics>
-            <Statistic>{total}T</Statistic>
-            <Statistic>{win}W</Statistic>
-            <Statistic>{draw}D</Statistic>
-          </Statistics>
-        </div>
-      </div>
-    )
+      )}
+      {playerStatus === 'connected' && (
+        <>
+          <div
+            css={css`
+              width: 7.5rem;
+              height: 7.5rem;
+              border-radius: 50%;
+              overflow: hidden;
+              background: #b6f8fd;
+              margin-right: ${reverse ? '0px' : '1rem'};
+              margin-left: ${reverse ? '1rem' : '0px'};
+            `}
+          >
+            <img
+              src={`http://res.cloudinary.com/raghubandaru/image/upload/v${player.avatar}`}
+              alt="Avatar"
+              width="100%"
+            />
+          </div>
+          <div
+            css={css`
+              align-self: center;
+              h2 {
+                margin-bottom: 1rem;
+              }
+            `}
+          >
+            <h2>{player.name}</h2>
+            <Statistics>
+              <Statistic>{total}T</Statistic>
+              <Statistic>{win}W</Statistic>
+              <Statistic>{draw}D</Statistic>
+            </Statistics>
+          </div>
+        </>
+      )}
+    </div>
   )
 }
 

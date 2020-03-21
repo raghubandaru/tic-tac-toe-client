@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import styled from 'styled-components'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import io from 'socket.io-client'
 
 import { getAccessToken } from '../../shared/helpers/token'
@@ -20,12 +21,35 @@ const StyledGameplay = styled(Gameplay)`
 
 function Gameplay({ className }) {
   const [game, setGame] = useState(null)
+  const [isLoading, setLoading] = useState(true)
 
   const { id } = useParams()
+  const history = useHistory()
   const { user } = useUser()
   const userId = user._id
   const accessToken = getAccessToken()
   const ENDPOINT = process.env.REACT_APP_API_DOMAIN
+
+  useEffect(() => {
+    const config = {
+      url: `http://localhost:5000/games/${id}`,
+      headers: {
+        Authorization: `Bearer ${getAccessToken()}`
+      }
+    }
+
+    axios(config)
+      .then(({ data }) => {
+        if (data.game.status === 'over') {
+          history.push('/dashboard')
+        } else {
+          setLoading(false)
+        }
+      })
+      .catch(() => {
+        setLoading(false)
+      })
+  }, [history, id])
 
   useEffect(() => {
     socket = io(ENDPOINT, {
@@ -62,6 +86,10 @@ function Gameplay({ className }) {
     }
 
     socket.emit('click', { gameId: id, index })
+  }
+
+  if (isLoading) {
+    return 'Loading...'
   }
 
   if (game) {

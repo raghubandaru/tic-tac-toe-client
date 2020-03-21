@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import axios from 'axios'
 import { useHistory, Link } from 'react-router-dom'
 import { css } from 'styled-components'
@@ -11,10 +11,32 @@ function Dashboard() {
   const [newGame, setNewGame] = useState('')
   const [joinGame, setJoinGame] = useState('')
   const [copySuccess, setCopySuccess] = useState('Copy code')
+  const [isLoading, setLoading] = useState(true)
 
   const clipRef = useRef(null)
 
   const history = useHistory()
+
+  useEffect(() => {
+    const config = {
+      url: `http://localhost:5000/games/active`,
+      headers: {
+        Authorization: `Bearer ${getAccessToken()}`
+      }
+    }
+
+    axios(config)
+      .then(({ data }) => {
+        if (data.game) {
+          history.push(`/dashboard/${data.game._id}`)
+        } else {
+          setLoading(false)
+        }
+      })
+      .catch(() => {
+        setLoading(false)
+      })
+  }, [history])
 
   const handleJoinGame = e => {
     e.preventDefault()
@@ -56,6 +78,10 @@ function Dashboard() {
     document.execCommand('copy')
     e.target.focus()
     setCopySuccess('Copied!')
+  }
+
+  if (isLoading) {
+    return 'Loading...'
   }
 
   return (
