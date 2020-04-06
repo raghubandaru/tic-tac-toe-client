@@ -10,10 +10,7 @@ function UnAuthenticated({ setNewRegister }) {
   return (
     <BrowserRouter>
       <Layout>
-        <Header>
-          <h1>Header Title</h1>
-          <p>Header Description</p>
-        </Header>
+        <Header />
         <Main>
           <Switch>
             <Route exact path="/">

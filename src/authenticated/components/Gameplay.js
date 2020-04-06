@@ -10,6 +10,7 @@ import { getAccessToken } from '../../shared/helpers/token'
 import { useUser } from '../../shared/context/User'
 import StyledPlayer from './Player'
 import StyledBoard from './Board'
+import { Header, Main } from '../../shared/components'
 
 let socket
 
@@ -104,34 +105,39 @@ function Gameplay({ className }) {
     console.log(playerTurn === userId)
 
     return (
-      <div className={className}>
-        <StyledPlayer
-          isTurn={game.player1 === playerTurn && game.status === 'active'}
-          isWinner={game.winner === game.player1}
-          playerId={game.player1}
-          playerStatus={game.player1Status}
-        />
-        <StyledBoard
-          handleBoardClick={handleBoardClick}
-          disabled={game.status !== 'active' || playerTurn !== userId}
-          board={game.board}
-          winningIndexes={game.winningIndexes}
-        />
-        {game.player2 ? (
-          <StyledPlayer
-            isTurn={game.player2 === playerTurn && game.status === 'active'}
-            isWinner={game.winner === game.player2}
-            playerId={game.player2}
-            playerStatus={game.player2Status}
-            reverse={true}
-          />
-        ) : (
-          'Loading...'
-        )}
-        {showDialog && (
-          <AlertModal setShowDialog={setShowDialog} code={game.code} />
-        )}
-      </div>
+      <>
+        <Header title="Gameplay" quote="Planning for game updates" />
+        <Main>
+          <div className={className}>
+            <StyledPlayer
+              isTurn={game.player1 === playerTurn && game.status === 'active'}
+              isWinner={game.winner === game.player1}
+              playerId={game.player1}
+              playerStatus={game.player1Status}
+            />
+            <StyledBoard
+              handleBoardClick={handleBoardClick}
+              disabled={game.status !== 'active' || playerTurn !== userId}
+              board={game.board}
+              winningIndexes={game.winningIndexes}
+            />
+            {game.player2 ? (
+              <StyledPlayer
+                isTurn={game.player2 === playerTurn && game.status === 'active'}
+                isWinner={game.winner === game.player2}
+                playerId={game.player2}
+                playerStatus={game.player2Status}
+                reverse={true}
+              />
+            ) : (
+              'Loading...'
+            )}
+            {showDialog && (
+              <AlertModal setShowDialog={setShowDialog} code={game.code} />
+            )}
+          </div>
+        </Main>
+      </>
     )
   } else {
     return null

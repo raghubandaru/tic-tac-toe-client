@@ -60,7 +60,7 @@ function Layout({ children, className }) {
             <Logo>Tic Tac Toe</Logo>
             {user ? (
               innerWidth > 400 ? (
-                <div className="pull-right">
+                <div className="pullright">
                   <Button
                     as={NavLink}
                     activeClassName="activeClassName"
@@ -114,7 +114,7 @@ Layout.propTypes = {
 
 export default styled(Layout)`
   .activeClassName {
-    font-weight: 600;
+    border-bottom: 3px solid #3298b4;
   }
 
   .pullright {

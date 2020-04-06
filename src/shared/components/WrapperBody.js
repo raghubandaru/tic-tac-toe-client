@@ -5,6 +5,5 @@ export const WrapperBody = styled.div`
   min-height: calc(100vh - 6rem);
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 `

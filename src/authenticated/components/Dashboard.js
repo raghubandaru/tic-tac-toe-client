@@ -6,6 +6,7 @@ import { css } from 'styled-components'
 import 'styled-components/macro'
 
 import DialogUpload from './DialogUpload'
+import { Header, Main } from '../../shared/components'
 import { Button, FormGroup, Input, Label } from '../../shared/elements'
 import { getAccessToken } from '../../shared/helpers/token'
 
@@ -80,46 +81,52 @@ function Dashboard({ newRegister, setNewRegister }) {
 
   return (
     <>
-      <div
-        css={css`
-          display: flex;
-          flex-direction: column;
-          justify-content: space-around;
-          height: calc(60vh - 10rem);
-        `}
-      >
-        <form onSubmit={handleJoinGame}>
-          <FormGroup>
-            <Label htmlFor="joinGame">Invited by someone?</Label>
-            <Input
-              type="text"
-              placeholder="Paste the code here"
-              name="joinGame"
-              id="joinGame"
-              value={joinGame}
-              onChange={e => setJoinGame(e.target.value)}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Button variant="secondary">Join here</Button>
-          </FormGroup>
-        </form>
-        <hr
+      <Header
+        title="Start Playing"
+        quote="Got the code paste below or create game"
+      />
+      <Main>
+        <div
           css={css`
-            border: none;
-            border-top: 2px dashed #102a43;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            height: calc(60vh - 10rem);
           `}
-        />
-        <div>
-          <FormGroup>
-            <Label>Wanna Start a game? click below</Label>
-            <Button variant="primary" onClick={handleCreateGame}>
-              Create Game
-            </Button>
-          </FormGroup>
+        >
+          <form onSubmit={handleJoinGame}>
+            <FormGroup>
+              <Label htmlFor="joinGame">Invited by someone?</Label>
+              <Input
+                type="text"
+                placeholder="Paste the code here"
+                name="joinGame"
+                id="joinGame"
+                value={joinGame}
+                onChange={e => setJoinGame(e.target.value)}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Button variant="secondary">Join here</Button>
+            </FormGroup>
+          </form>
+          <hr
+            css={css`
+              border: none;
+              border-top: 2px dashed #102a43;
+            `}
+          />
+          <div>
+            <FormGroup>
+              <Label>Wanna Start a game? click below</Label>
+              <Button variant="primary" onClick={handleCreateGame}>
+                Create Game
+              </Button>
+            </FormGroup>
+          </div>
         </div>
-      </div>
-      <DialogUpload isOpen={newRegister} close={close} />
+        <DialogUpload isOpen={newRegister} close={close} />
+      </Main>
     </>
   )
 }
