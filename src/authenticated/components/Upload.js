@@ -132,8 +132,8 @@ function Upload({ close }) {
               `}
             ></canvas>
             <Button
-              fullwidth
-              secondary
+              width={100}
+              variant="secondary"
               onClick={handleClearToDefault}
               css={css`
                 margin-bottom: 1rem;
@@ -141,7 +141,7 @@ function Upload({ close }) {
             >
               Clear
             </Button>
-            <Button fullwidth primary onClick={handleAvatarUpload}>
+            <Button width={100} variant="primary" onClick={handleAvatarUpload}>
               Upload
             </Button>
           </div>
@@ -152,7 +152,7 @@ function Upload({ close }) {
             <input {...getInputProps()} multiple={false} accept="image/*" />
             {isDragActive ? <p>Drop the image here</p> : <p>Upload Image</p>}
           </DragnDrop>
-          <Button secondary onClick={close}>
+          <Button variant="secondary" onClick={close}>
             Skip
           </Button>
         </UploadContainer>

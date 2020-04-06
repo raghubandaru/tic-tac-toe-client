@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
 
 export const Button = styled.button`
@@ -12,16 +13,24 @@ export const Button = styled.button`
   padding: 1rem 2rem;
   text-decoration: none;
   text-align: center;
-  width: ${props => props.width && `${props.width}px`};
+  width: ${props => props.width && `${props.width}%`};
 
   ${props =>
-    props.fullwidth &&
+    props.disabled &&
     css`
-      width: 100%;
+      opacity: 0.8;
+      cursor: not-allowed;
     `}
 
   ${props =>
-    props.primary &&
+    props.variant === 'brand' &&
+    css`
+      font-size: 2rem;
+      font-weight: 600;
+    `}
+
+  ${props =>
+    props.variant === 'primary' &&
     css`
       background: #54d1db;
       color: #102a43;
@@ -31,15 +40,12 @@ export const Button = styled.button`
     `}
 
   ${props =>
-    props.secondary &&
+    props.variant === 'secondary' &&
     css`
       border: 2px solid #54d1db;
     `}
-
-  ${props =>
-    props.disabled &&
-    css`
-      opacity: 0.8;
-      cursor: not-allowed;
-    `}
 `
+
+Button.propTypes = {
+  variant: PropTypes.oneOf(['brand', 'primary', 'secondary'])
+}

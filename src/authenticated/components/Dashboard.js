@@ -109,7 +109,7 @@ function Dashboard({ newRegister, setNewRegister }) {
             />
           </FormGroup>
           <FormGroup>
-            <Button secondary>Join here</Button>
+            <Button variant="secondary">Join here</Button>
           </FormGroup>
         </form>
         <hr
@@ -121,7 +121,7 @@ function Dashboard({ newRegister, setNewRegister }) {
         <div>
           <FormGroup>
             <Label>Wanna Start a game? click below</Label>
-            <Button primary onClick={handleCreateGame}>
+            <Button variant="primary" onClick={handleCreateGame}>
               Create Game
             </Button>
           </FormGroup>

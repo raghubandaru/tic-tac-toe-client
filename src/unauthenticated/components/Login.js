@@ -58,7 +58,7 @@ function Login() {
         />
       </FormGroup>
       <FormGroup>
-        <Button primary fullwidth>
+        <Button variant="primary" width={100}>
           Login
         </Button>
       </FormGroup>
@@ -66,7 +66,7 @@ function Login() {
         <Button as={Link} teritiary to="/">
           Forgot Password
         </Button>
-        <Button as={Link} secondary to="/register">
+        <Button as={Link} variant="secondary" to="/register">
           Create Account
         </Button>
       </ButtonGroup>

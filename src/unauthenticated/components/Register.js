@@ -70,7 +70,7 @@ function Register({ setNewRegister }) {
         />
       </FormGroup>
       <FormGroup>
-        <Button primary>Register</Button>
+        <Button variant="primary">Register</Button>
       </FormGroup>
       <ButtonGroup>
         <Button as={Link} to="/login">

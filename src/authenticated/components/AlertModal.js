@@ -45,7 +45,7 @@ function AlertModal({ className, children, code, setShowDialog }) {
         >
           <Input type="text" name="clip" value={code} ref={clipRef} readOnly />
         </Label>
-        <Button primary onClick={copyToClipboard} ref={actionRef}>
+        <Button variant="primary" onClick={copyToClipboard} ref={actionRef}>
           Copy 'N' Close
         </Button>
       </FormGroup>
