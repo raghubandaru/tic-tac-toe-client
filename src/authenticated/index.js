@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom'
 
 import { Main } from '../shared/components'
 import Layout from '../shared/layout'
-import { Dashboard, StyledGameplay } from './components'
+import { Dashboard, Profile, StyledGameplay } from './components'
 
 function Authenticated({ newRegister, setNewRegister }) {
   return (
@@ -20,6 +20,9 @@ function Authenticated({ newRegister, setNewRegister }) {
             </Route>
             <Route exact path="/dashboard/:id">
               <StyledGameplay />
+            </Route>
+            <Route path="/profile">
+              <Profile />
             </Route>
             <Route>
               <Redirect to="/dashboard" />
