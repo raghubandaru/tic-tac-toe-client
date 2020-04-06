@@ -1,18 +1,19 @@
 import React, { useCallback, useState, useRef } from 'react'
-import styled, { css } from 'styled-components'
-import 'styled-components/macro'
+import axios from 'axios'
 import { useDropzone } from 'react-dropzone'
 import ReactCrop from 'react-image-crop'
-import axios from 'axios'
+import styled, { css } from 'styled-components'
+import 'styled-components/macro'
+import 'react-image-crop/dist/ReactCrop.css'
 
-import { Button, ButtonGroup } from '../../shared/elements'
+import { useUser } from '../../shared/context/User'
+import { Button } from '../../shared/elements'
 import {
   image64toCanvasRef,
   extractImageFileExtensionFromBase64,
   base64StringtoFile
 } from '../../shared/helpers/image'
 import { getAccessToken } from '../../shared/helpers/token'
-import { useUser } from '../../shared/context/User'
 
 const StyledReactCrop = styled(ReactCrop)`
   margin: 0 auto;
@@ -21,7 +22,7 @@ const StyledReactCrop = styled(ReactCrop)`
 
 const DragnDrop = styled.div`
   flex-grow: 1;
-  border: 2px dashed #bcccdc;
+  border: 2px dashed #334e68;
   background: #102a43;
   display: flex;
   justify-content: center;
@@ -35,7 +36,7 @@ const UploadContainer = styled.div`
   flex-direction: column;
 `
 
-function Upload({ userData }) {
+function Upload({ close }) {
   const [imgSrc, setImgSrc] = useState(null)
   const [crop, setCrop] = useState({
     unit: '%',
@@ -43,7 +44,7 @@ function Upload({ userData }) {
     width: 40
   })
   const imagePreviewCanvasRef = useRef()
-  const { setUser } = useUser()
+  const { user, setUser } = useUser()
 
   const onDrop = useCallback(acceptedFiles => {
     const currentFile = acceptedFiles[0]
@@ -59,10 +60,6 @@ function Upload({ userData }) {
   }, [])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
-
-  const handleSkip = () => {
-    setUser(userData)
-  }
 
   const handleImageLoaded = image => {}
 
@@ -86,7 +83,7 @@ function Upload({ userData }) {
       const data = new FormData()
       data.append('file', croppedFile)
 
-      const url = `${process.env.REACT_APP_API_DOMAIN}/users/${userData._id}`
+      const url = `${process.env.REACT_APP_API_DOMAIN}/users/${user._id}`
       const config = {
         method: 'PATCH',
         url,
@@ -98,6 +95,7 @@ function Upload({ userData }) {
 
       axios(config).then(({ data: { user } }) => {
         setUser(user)
+        close()
       })
     }
   }
@@ -120,21 +118,32 @@ function Upload({ userData }) {
             onImageLoaded={handleImageLoaded}
             onComplete={handleOnCropComplete}
           />
-          <div>
+          <div
+            css={css`
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+            `}
+          >
             <canvas
               ref={imagePreviewCanvasRef}
               css={css`
                 display: none;
               `}
             ></canvas>
-            <ButtonGroup>
-              <Button secondary onClick={handleClearToDefault}>
-                Clear
-              </Button>
-              <Button primary onClick={handleAvatarUpload}>
-                Upload
-              </Button>
-            </ButtonGroup>
+            <Button
+              fullwidth
+              secondary
+              onClick={handleClearToDefault}
+              css={css`
+                margin-bottom: 1rem;
+              `}
+            >
+              Clear
+            </Button>
+            <Button fullwidth primary onClick={handleAvatarUpload}>
+              Upload
+            </Button>
           </div>
         </UploadContainer>
       ) : (
@@ -143,13 +152,9 @@ function Upload({ userData }) {
             <input {...getInputProps()} multiple={false} accept="image/*" />
             {isDragActive ? <p>Drop the image here</p> : <p>Upload Image</p>}
           </DragnDrop>
-          <div
-            css={css`
-              text-align: center;
-            `}
-          >
-            <Button onClick={handleSkip}>Skip</Button>
-          </div>
+          <Button secondary onClick={close}>
+            Skip
+          </Button>
         </UploadContainer>
       )}
     </>

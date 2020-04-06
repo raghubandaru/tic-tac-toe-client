@@ -9,17 +9,15 @@ import {
   Label,
   ButtonGroup
 } from '../../shared/elements'
-// import { useUser } from '../../context/User'
+import { useUser } from '../../shared/context/User'
 import { setAccessToken } from '../../shared/helpers/token'
-import { Upload } from './Upload'
 
-function Register() {
+function Register({ setNewRegister }) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [userData, setUserData] = useState(null)
 
-  // const { setUser } = useUser()
+  const { setUser } = useUser()
 
   const handleSignUp = e => {
     e.preventDefault()
@@ -34,13 +32,9 @@ function Register() {
 
     axios(config).then(({ data: { user, accessToken } }) => {
       setAccessToken(accessToken)
-      // setUser(user)
-      setUserData(user)
+      setNewRegister(true)
+      setUser(user)
     })
-  }
-
-  if (userData) {
-    return <Upload userData={userData} />
   }
 
   return (

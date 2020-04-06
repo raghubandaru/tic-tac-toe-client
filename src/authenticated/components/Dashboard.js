@@ -6,8 +6,9 @@ import 'styled-components/macro'
 
 import { Button, FormGroup, Input, Label } from '../../shared/elements'
 import { getAccessToken } from '../../shared/helpers/token'
+import DialogUpload from './DialogUpload'
 
-function Dashboard() {
+function Dashboard({ newRegister, setNewRegister }) {
   const [newGame, setNewGame] = useState('')
   const [joinGame, setJoinGame] = useState('')
   const [copySuccess, setCopySuccess] = useState('Copy code')
@@ -16,6 +17,10 @@ function Dashboard() {
   const clipRef = useRef(null)
 
   const history = useHistory()
+
+  const close = () => {
+    setNewRegister(false)
+  }
 
   useEffect(() => {
     const config = {
@@ -85,70 +90,73 @@ function Dashboard() {
   }
 
   return (
-    <div
-      css={css`
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        height: calc(60vh - 10rem);
-      `}
-    >
-      <form onSubmit={handleJoinGame}>
-        <FormGroup>
-          <Label htmlFor="joinGame">Invited by someone?</Label>
-          <Input
-            type="text"
-            placeholder="Paste the code here"
-            name="joinGame"
-            id="joinGame"
-            value={joinGame}
-            onChange={e => setJoinGame(e.target.value)}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Button secondary>Join here</Button>
-        </FormGroup>
-      </form>
-      <hr
+    <>
+      <div
         css={css`
-          border: none;
-          border-top: 2px dashed #102a43;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          height: calc(60vh - 10rem);
         `}
-      />
-      <div>
-        {newGame ? (
-          <>
-            <FormGroup>
-              <Label htmlFor="clip" />
-              <Input
-                type="text"
-                name="clip"
-                value={newGame._id}
-                ref={clipRef}
-                readOnly
-              />
-            </FormGroup>
-            <FormGroup>
-              <Button secondary onClick={copyToClipboard}>
-                {copySuccess}
-              </Button>
-            </FormGroup>
-            <FormGroup>
-              <Button primary as={Link} to={`/dashboard/${newGame._id}`}>
-                Go to game
-              </Button>
-            </FormGroup>
-          </>
-        ) : (
+      >
+        <form onSubmit={handleJoinGame}>
           <FormGroup>
-            <Label>Wanna Start a game? click below</Label>
-            <Button primary onClick={handleCreateGame}>
-              Create Game
-            </Button>
+            <Label htmlFor="joinGame">Invited by someone?</Label>
+            <Input
+              type="text"
+              placeholder="Paste the code here"
+              name="joinGame"
+              id="joinGame"
+              value={joinGame}
+              onChange={e => setJoinGame(e.target.value)}
+            />
           </FormGroup>
-        )}
+          <FormGroup>
+            <Button secondary>Join here</Button>
+          </FormGroup>
+        </form>
+        <hr
+          css={css`
+            border: none;
+            border-top: 2px dashed #102a43;
+          `}
+        />
+        <div>
+          {newGame ? (
+            <>
+              <FormGroup>
+                <Label htmlFor="clip" />
+                <Input
+                  type="text"
+                  name="clip"
+                  value={newGame._id}
+                  ref={clipRef}
+                  readOnly
+                />
+              </FormGroup>
+              <FormGroup>
+                <Button secondary onClick={copyToClipboard}>
+                  {copySuccess}
+                </Button>
+              </FormGroup>
+              <FormGroup>
+                <Button primary as={Link} to={`/dashboard/${newGame._id}`}>
+                  Go to game
+                </Button>
+              </FormGroup>
+            </>
+          ) : (
+            <FormGroup>
+              <Label>Wanna Start a game? click below</Label>
+              <Button primary onClick={handleCreateGame}>
+                Create Game
+              </Button>
+            </FormGroup>
+          )}
+        </div>
       </div>
-    </div>
+      <DialogUpload isOpen={newRegister} close={close} />
+    </>
   )
 }
 
