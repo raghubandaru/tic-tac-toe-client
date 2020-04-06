@@ -1,20 +1,18 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { useHistory, Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { css } from 'styled-components'
 import 'styled-components/macro'
 
+import DialogUpload from './DialogUpload'
 import { Button, FormGroup, Input, Label } from '../../shared/elements'
 import { getAccessToken } from '../../shared/helpers/token'
-import DialogUpload from './DialogUpload'
 
 function Dashboard({ newRegister, setNewRegister }) {
-  const [newGame, setNewGame] = useState('')
   const [joinGame, setJoinGame] = useState('')
-  const [copySuccess, setCopySuccess] = useState('Copy code')
+  // const [copySuccess, setCopySuccess] = useState('Copy code')
   const [isLoading, setLoading] = useState(true)
-
-  const clipRef = useRef(null)
+  // const clipRef = useRef(null)
 
   const history = useHistory()
 
@@ -72,18 +70,17 @@ function Dashboard({ newRegister, setNewRegister }) {
 
     axios(config)
       .then(({ data: { game } }) => {
-        // history.push(`/dashboard/${game._id}`)
-        setNewGame(game)
+        history.push(`/dashboard/${game._id}`)
       })
       .catch(error => console.log(error))
   }
 
-  const copyToClipboard = e => {
-    clipRef.current.select()
-    document.execCommand('copy')
-    e.target.focus()
-    setCopySuccess('Copied!')
-  }
+  // const copyToClipboard = e => {
+  //   clipRef.current.select()
+  //   document.execCommand('copy')
+  //   e.target.focus()
+  //   setCopySuccess('Copied!')
+  // }
 
   if (isLoading) {
     return 'Loading...'
@@ -122,37 +119,12 @@ function Dashboard({ newRegister, setNewRegister }) {
           `}
         />
         <div>
-          {newGame ? (
-            <>
-              <FormGroup>
-                <Label htmlFor="clip" />
-                <Input
-                  type="text"
-                  name="clip"
-                  value={newGame._id}
-                  ref={clipRef}
-                  readOnly
-                />
-              </FormGroup>
-              <FormGroup>
-                <Button secondary onClick={copyToClipboard}>
-                  {copySuccess}
-                </Button>
-              </FormGroup>
-              <FormGroup>
-                <Button primary as={Link} to={`/dashboard/${newGame._id}`}>
-                  Go to game
-                </Button>
-              </FormGroup>
-            </>
-          ) : (
-            <FormGroup>
-              <Label>Wanna Start a game? click below</Label>
-              <Button primary onClick={handleCreateGame}>
-                Create Game
-              </Button>
-            </FormGroup>
-          )}
+          <FormGroup>
+            <Label>Wanna Start a game? click below</Label>
+            <Button primary onClick={handleCreateGame}>
+              Create Game
+            </Button>
+          </FormGroup>
         </div>
       </div>
       <DialogUpload isOpen={newRegister} close={close} />

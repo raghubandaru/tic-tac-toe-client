@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { useParams, useHistory } from 'react-router-dom'
 import io from 'socket.io-client'
 
+import AlertModal from './AlertModal'
 import { getAccessToken } from '../../shared/helpers/token'
 import { useUser } from '../../shared/context/User'
 import StyledPlayer from './Player'
@@ -22,6 +23,7 @@ const StyledGameplay = styled(Gameplay)`
 function Gameplay({ className }) {
   const [game, setGame] = useState(null)
   const [isLoading, setLoading] = useState(true)
+  const [showDialog, setShowDialog] = useState(false)
 
   const { id } = useParams()
   const history = useHistory()
@@ -43,6 +45,10 @@ function Gameplay({ className }) {
         if (data.game.status === 'over') {
           history.push('/dashboard')
         } else {
+          console.log('data', data)
+          if (data.game.player1 && data.game.status === 'waiting') {
+            setShowDialog(true)
+          }
           setLoading(false)
         }
       })
@@ -120,6 +126,9 @@ function Gameplay({ className }) {
           />
         ) : (
           'Loading...'
+        )}
+        {showDialog && (
+          <AlertModal setShowDialog={setShowDialog} code={game.code} />
         )}
       </div>
     )

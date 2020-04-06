@@ -23,7 +23,7 @@ const StyledReactCrop = styled(ReactCrop)`
 const DragnDrop = styled.div`
   flex-grow: 1;
   border: 2px dashed #334e68;
-  background: #102a43;
+  background: #243b53;
   display: flex;
   justify-content: center;
   align-items: center;
