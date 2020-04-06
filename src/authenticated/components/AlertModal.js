@@ -1,4 +1,5 @@
 import React, { useRef } from 'react'
+import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
 import 'styled-components/macro'
 import {
@@ -11,7 +12,7 @@ import '@reach/dialog/styles.css'
 import { below } from '../../shared/utilities/Breakpoints'
 import { Button, FormGroup, Label, Input } from '../../shared/elements'
 
-function AlertModal({ className, children, code, setShowDialog }) {
+function AlertModal({ className, code, setShowDialog }) {
   const actionRef = useRef()
   const clipRef = useRef()
 
@@ -52,6 +53,12 @@ function AlertModal({ className, children, code, setShowDialog }) {
       <FormGroup></FormGroup>
     </AlertDialog>
   )
+}
+
+AlertModal.propTypes = {
+  className: PropTypes.string.isRequired,
+  code: PropTypes.string.isRequired,
+  setShowDialog: PropTypes.func.isRequired
 }
 
 export default styled(AlertModal)`

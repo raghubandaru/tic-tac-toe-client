@@ -1,5 +1,6 @@
 import React, { useState, useEffect, createContext, useContext } from 'react'
 import axios from 'axios'
+import PropTypes from 'prop-types'
 
 import { setAccessToken } from '../helpers/token'
 
@@ -48,5 +49,9 @@ function UserProvider({ children }) {
 }
 
 const useUser = () => useContext(UserContext)
+
+UserProvider.propTypes = {
+  children: PropTypes.element.isRequired
+}
 
 export { UserProvider, useUser }

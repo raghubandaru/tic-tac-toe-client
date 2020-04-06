@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
 import 'styled-components/macro'
 
-// import { useUser } from '../../shared/context/User'
 import { getAccessToken } from '../../shared/helpers/token'
 import { below } from '../../shared/utilities/Breakpoints'
 
@@ -152,6 +152,13 @@ function Player({ className, reverse, playerId, playerStatus }) {
       )}
     </div>
   )
+}
+
+Player.propTypes = {
+  className: PropTypes.string.isRequired,
+  reverse: PropTypes.bool,
+  playerId: PropTypes.string.isRequired,
+  playerStatus: PropTypes.oneOf(['connected', 'disconnected']).isRequired
 }
 
 export default StyledPlayer

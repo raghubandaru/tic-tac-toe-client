@@ -1,8 +1,9 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom'
 
-import { Header, Main } from '../shared/components'
 import { Landing, Login, Register } from './components'
+import { Header, Main } from '../shared/components'
 import Layout from '../shared/layout'
 
 function UnAuthenticated({ setNewRegister }) {
@@ -32,6 +33,10 @@ function UnAuthenticated({ setNewRegister }) {
       </Layout>
     </BrowserRouter>
   )
+}
+
+UnAuthenticated.propTypes = {
+  setNewRegister: PropTypes.func.isRequired
 }
 
 export default UnAuthenticated

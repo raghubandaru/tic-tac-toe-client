@@ -1,9 +1,10 @@
 import React from 'react'
 import axios from 'axios'
+import PropTypes from 'prop-types'
 
 import { Container, Logo, Nav, WrapperBody, WrapperHead } from '../components'
-import { getAccessToken, setAccessToken } from '../helpers/token'
 import { useUser } from '../context/User'
+import { getAccessToken, setAccessToken } from '../helpers/token'
 import { Button } from '../elements'
 
 function Layout({ children }) {
@@ -40,6 +41,13 @@ function Layout({ children }) {
       </WrapperBody>
     </div>
   )
+}
+
+Layout.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element)
+  ])
 }
 
 export default Layout

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom'
 import { css } from 'styled-components'
 import 'styled-components/macro'
@@ -10,9 +11,7 @@ import { getAccessToken } from '../../shared/helpers/token'
 
 function Dashboard({ newRegister, setNewRegister }) {
   const [joinGame, setJoinGame] = useState('')
-  // const [copySuccess, setCopySuccess] = useState('Copy code')
   const [isLoading, setLoading] = useState(true)
-  // const clipRef = useRef(null)
 
   const history = useHistory()
 
@@ -75,13 +74,6 @@ function Dashboard({ newRegister, setNewRegister }) {
       .catch(error => console.log(error))
   }
 
-  // const copyToClipboard = e => {
-  //   clipRef.current.select()
-  //   document.execCommand('copy')
-  //   e.target.focus()
-  //   setCopySuccess('Copied!')
-  // }
-
   if (isLoading) {
     return 'Loading...'
   }
@@ -130,6 +122,11 @@ function Dashboard({ newRegister, setNewRegister }) {
       <DialogUpload isOpen={newRegister} close={close} />
     </>
   )
+}
+
+Dashboard.propTypes = {
+  newRegister: PropTypes.bool.isRequired,
+  setNewRegister: PropTypes.func.isRequired
 }
 
 export { Dashboard }

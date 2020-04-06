@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 import { useParams, useHistory } from 'react-router-dom'
 import io from 'socket.io-client'
 
@@ -135,6 +136,10 @@ function Gameplay({ className }) {
   } else {
     return null
   }
+}
+
+Gameplay.propTypes = {
+  className: PropTypes.string.isRequired
 }
 
 export { StyledGameplay }

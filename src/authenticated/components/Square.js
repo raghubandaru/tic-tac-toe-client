@@ -1,9 +1,10 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
 
 import { Button } from '../../shared/elements'
 
-function Square({ disabled, handleBoardClick, value, isWinningIndex }) {
+function Square({ disabled, handleBoardClick, isWinningIndex, value }) {
   return (
     <SquareButton
       disabled={disabled}
@@ -32,5 +33,12 @@ const SquareButton = styled(Button)`
     font-family: 'Aladin', cursive;
   }
 `
+
+Square.propTypes = {
+  disabled: PropTypes.bool.isRequired,
+  handleBoardClick: PropTypes.func.isRequired,
+  isWinningIndex: PropTypes.bool.isRequired,
+  value: PropTypes.oneOf(['O', 'X'])
+}
 
 export default Square

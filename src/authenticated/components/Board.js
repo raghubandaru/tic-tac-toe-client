@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 import Square from './Square'
@@ -49,6 +50,14 @@ function Board({
       </div>
     </div>
   )
+}
+
+Board.propTypes = {
+  board: PropTypes.array.isRequired,
+  className: PropTypes.string.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  handleBoardClick: PropTypes.func.isRequired,
+  winningIndexes: PropTypes.array.isRequired
 }
 
 export default StyledBoard

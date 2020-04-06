@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom'
 
 import { Main } from '../shared/components'
@@ -28,6 +29,11 @@ function Authenticated({ newRegister, setNewRegister }) {
       </Layout>
     </BrowserRouter>
   )
+}
+
+Authenticated.propTypes = {
+  newRegister: PropTypes.bool.isRequired,
+  setNewRegister: PropTypes.func.isRequired
 }
 
 export default Authenticated

@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useRef } from 'react'
 import axios from 'axios'
+import PropTypes from 'prop-types'
 import { useDropzone } from 'react-dropzone'
 import ReactCrop from 'react-image-crop'
 import styled, { css } from 'styled-components'
@@ -159,6 +160,10 @@ function Upload({ close }) {
       )}
     </>
   )
+}
+
+Upload.propTypes = {
+  close: PropTypes.func.isRequired
 }
 
 export { Upload }

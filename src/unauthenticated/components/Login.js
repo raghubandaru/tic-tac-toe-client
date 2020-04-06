@@ -63,7 +63,7 @@ function Login() {
         </Button>
       </FormGroup>
       <ButtonGroup>
-        <Button as={Link} teritiary to="/">
+        <Button as={Link} to="/">
           Forgot Password
         </Button>
         <Button as={Link} variant="secondary" to="/register">
