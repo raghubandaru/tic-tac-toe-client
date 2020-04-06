@@ -15,6 +15,11 @@ export const Button = styled.button`
   text-align: center;
   width: ${props => props.width && `${props.width}%`};
 
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(3,101,217, 0.8);
+    outline: none;
+  }
+
   ${props =>
     props.disabled &&
     css`
