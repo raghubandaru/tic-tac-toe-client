@@ -31,9 +31,11 @@ function Layout({ children, className }) {
   }
 
   useEffect(() => {
-    window.addEventListener('resize', debounce(handleResize, 300))
+    const debouncedHandleResize = () => debounce(handleResize, 300)
 
-    return () => window.removeEventListener('resize', handleResize)
+    window.addEventListener('resize', debouncedHandleResize)
+
+    return () => window.removeEventListener('resize', debouncedHandleResize)
   }, [])
 
   const handleLogout = () => {
@@ -59,7 +61,7 @@ function Layout({ children, className }) {
           <Nav>
             <Logo>Tic Tac Toe</Logo>
             {user ? (
-              innerWidth > 400 ? (
+              innerWidth > 600 ? (
                 <div className="pullright">
                   <Button
                     as={NavLink}
