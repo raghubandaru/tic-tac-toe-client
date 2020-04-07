@@ -3,7 +3,9 @@ import React, { lazy, useState } from 'react'
 import { useUser } from './shared/context/User'
 
 const UnAuthenticated = lazy(() => import('./unauthenticated'))
-const Authenticated = lazy(() => import('./authenticated'))
+const Authenticated = lazy(() =>
+  import(/* webpackPrefetch: true */ './authenticated')
+)
 
 function App() {
   const [newRegister, setNewRegister] = useState(false)
