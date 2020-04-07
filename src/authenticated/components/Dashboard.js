@@ -6,15 +6,26 @@ import { css } from 'styled-components'
 import 'styled-components/macro'
 
 import DialogUpload from './DialogUpload'
-import { Header, Main } from '../../shared/components'
+import { ErrorMessage, Header, Main } from '../../shared/components'
 import { Button, FormGroup, Input, Label } from '../../shared/elements'
 import { getAccessToken } from '../../shared/helpers/token'
+import { isError, validateJoinGame } from '../../shared/utilities/validation'
 
 function Dashboard({ newRegister, setNewRegister }) {
-  const [joinGame, setJoinGame] = useState('')
+  const [error, setError] = useState(null)
   const [isLoading, setLoading] = useState(true)
+  const [joinGame, setJoinGame] = useState('')
+  const [touched, setTouched] = useState({
+    joinGame: false
+  })
 
   const history = useHistory()
+
+  const handleBlur = e => {
+    const fieldName = e.target.name
+
+    setTouched({ ...touched, [fieldName]: true })
+  }
 
   const close = () => {
     setNewRegister(false)
@@ -56,7 +67,9 @@ function Dashboard({ newRegister, setNewRegister }) {
       .then(({ data: { updatedGame } }) => {
         history.push(`/dashboard/${updatedGame._id}`)
       })
-      .catch(error => console.log(error))
+      .catch(error => {
+        setError(error.response.data.error)
+      })
   }
 
   const handleCreateGame = () => {
@@ -79,6 +92,8 @@ function Dashboard({ newRegister, setNewRegister }) {
     return 'Loading...'
   }
 
+  const errors = validateJoinGame(joinGame)
+
   return (
     <>
       <Header
@@ -95,6 +110,11 @@ function Dashboard({ newRegister, setNewRegister }) {
           `}
         >
           <form onSubmit={handleJoinGame}>
+            {error && (
+              <FormGroup>
+                <ErrorMessage error={error} />
+              </FormGroup>
+            )}
             <FormGroup>
               <Label htmlFor="joinGame">Invited by someone?</Label>
               <Input
@@ -104,10 +124,16 @@ function Dashboard({ newRegister, setNewRegister }) {
                 id="joinGame"
                 value={joinGame}
                 onChange={e => setJoinGame(e.target.value)}
+                onBlur={handleBlur}
               />
+              {errors.joinGame && touched.joinGame && (
+                <ErrorMessage error={errors.joinGame} />
+              )}
             </FormGroup>
             <FormGroup>
-              <Button variant="secondary">Join here</Button>
+              <Button variant="secondary" disabled={isError(errors)}>
+                Join here
+              </Button>
             </FormGroup>
           </form>
           <hr
