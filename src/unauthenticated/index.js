@@ -2,10 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom'
 
-import { Landing, Login, Register } from './components'
+import { ForgotPassword, Login, Register, ResetPassword } from './components'
 import { Header, Main } from '../shared/components'
 import Layout from '../shared/layout'
-
 function UnAuthenticated({ setNewRegister }) {
   return (
     <BrowserRouter>
@@ -13,8 +12,11 @@ function UnAuthenticated({ setNewRegister }) {
         <Header />
         <Main>
           <Switch>
-            <Route exact path="/">
-              <Landing />
+            <Route path="/reset_password/:userId/:resetToken">
+              <ResetPassword />
+            </Route>
+            <Route path="/forgot_password">
+              <ForgotPassword />
             </Route>
             <Route path="/login">
               <Login />
@@ -23,7 +25,7 @@ function UnAuthenticated({ setNewRegister }) {
               <Register setNewRegister={setNewRegister} />
             </Route>
             <Route>
-              <Redirect to="/" />
+              <Redirect to="/login" />
             </Route>
           </Switch>
         </Main>

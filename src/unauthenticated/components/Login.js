@@ -110,7 +110,7 @@ function Login() {
         </FormGroup>
       </form>
       <ButtonGroup>
-        <Button as={Link} width="100" to="/">
+        <Button as={Link} width="100" to="/forgot_password">
           Forgot Password
         </Button>
         <Button as={Link} width="100" variant="secondary" to="/register">

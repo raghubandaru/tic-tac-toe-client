@@ -7,6 +7,8 @@ const isValidEmail = value => {
   return re.test(value.toLowerCase())
 }
 
+const isPasswordSame = inputs => inputs.password === inputs.confirmPassword
+
 const isError = errors => Object.keys(errors).some(error => errors[error])
 
 const validateLogin = inputs => ({
@@ -32,6 +34,29 @@ const validateRegister = inputs => ({
     : null
 })
 
+const validateForgotPassword = email => ({
+  email: !isRequired(email)
+    ? 'Email is required'
+    : !isValidEmail(email)
+    ? 'Email is invalid'
+    : null
+})
+
+const validateResetPassword = inputs => ({
+  password: !isRequired(inputs.password)
+    ? 'Password is required'
+    : !isLongerthan(3, inputs.password)
+    ? 'Password should be longer than 3 characters'
+    : null,
+  confirmPassword: !isRequired(inputs.confirmPassword)
+    ? 'Confirm Password is required'
+    : !isLongerthan(3, inputs.confirmPassword)
+    ? 'Password should be longer than 3 characters'
+    : !isPasswordSame(inputs)
+    ? 'Both passwords do not match'
+    : null
+})
+
 const validateGoal = name => ({
   name: !isRequired(name) ? 'Goal name is required' : null
 })
@@ -49,9 +74,11 @@ export {
   isLongerthan,
   isRequired,
   isValidEmail,
+  validateForgotPassword,
   validateGoal,
   validateJoinGame,
   validateLogin,
   validateRegister,
+  validateResetPassword,
   validateTask
 }
