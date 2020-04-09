@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { useParams, useHistory } from 'react-router-dom'
@@ -8,8 +7,8 @@ import io from 'socket.io-client'
 import AlertModal from './AlertModal'
 import { getAccessToken } from '../../shared/helpers/token'
 import { useUser } from '../../shared/context/User'
-import StyledPlayer from './Player'
-import StyledBoard from './Board'
+import Player from './Player'
+import Board from './Board'
 import { Header, Main } from '../../shared/components'
 
 let socket
@@ -35,31 +34,6 @@ function Gameplay({ className }) {
   const ENDPOINT = process.env.REACT_APP_API_DOMAIN
 
   useEffect(() => {
-    const config = {
-      url: `http://localhost:5000/games/${id}`,
-      headers: {
-        Authorization: `Bearer ${getAccessToken()}`
-      }
-    }
-
-    axios(config)
-      .then(({ data }) => {
-        if (data.game.status === 'over') {
-          history.push('/dashboard')
-        } else {
-          console.log('data', data)
-          if (data.game.player1 && data.game.status === 'waiting') {
-            setShowDialog(true)
-          }
-          setLoading(false)
-        }
-      })
-      .catch(() => {
-        setLoading(false)
-      })
-  }, [history, id])
-
-  useEffect(() => {
     socket = io(ENDPOINT, {
       query: {
         token: accessToken
@@ -69,7 +43,19 @@ function Gameplay({ className }) {
     socket.emit('join', { gameId: id })
 
     socket.on('game_update', ({ game }) => {
+      // Redirect to dashboard if game is not active or doesn't exist
+      if (!game || game.status === 'over') {
+        return history.push('/dashboard')
+      }
+
       setGame(game)
+
+      // Show code for waiting games
+      if (game.status === 'waiting') {
+        setShowDialog(true)
+      }
+
+      setLoading(false)
     })
 
     socket.on('click_update', ({ updatedGame }) => {
@@ -80,13 +66,8 @@ function Gameplay({ className }) {
       setGame(updatedGame)
     })
 
-    return () => {
-      console.log(id)
-      socket.emit('disconnect', { gameId: id })
-
-      socket.off()
-    }
-  }, [ENDPOINT, accessToken, id, userId])
+    return () => socket.close()
+  }, [ENDPOINT, accessToken, history, id, userId])
 
   const handleBoardClick = index => {
     if (game.board[index]) {
@@ -106,27 +87,30 @@ function Gameplay({ className }) {
 
     return (
       <>
-        <Header title="Gameplay" quote="Planning for game updates" />
+        <Header
+          title="Gameplay"
+          quote="Line up X or O horizontally, vertically or diagonally"
+        />
         <Main>
           <div className={className}>
-            <StyledPlayer
+            <Player
               isTurn={game.player1 === playerTurn && game.status === 'active'}
               isWinner={game.winner === game.player1}
               playerId={game.player1}
-              playerStatus={game.player1Status}
+              totalPlayerConnections={game.player1Connections.length}
             />
-            <StyledBoard
+            <Board
               handleBoardClick={handleBoardClick}
               disabled={game.status !== 'active' || playerTurn !== userId}
               board={game.board}
               winningIndexes={game.winningIndexes}
             />
             {game.player2 ? (
-              <StyledPlayer
+              <Player
                 isTurn={game.player2 === playerTurn && game.status === 'active'}
                 isWinner={game.winner === game.player2}
                 playerId={game.player2}
-                playerStatus={game.player2Status}
+                totalPlayerConnections={game.player2Connections.length}
                 reverse={true}
               />
             ) : (
@@ -148,4 +132,4 @@ Gameplay.propTypes = {
   className: PropTypes.string.isRequired
 }
 
-export { StyledGameplay }
+export { StyledGameplay as Gameplay }

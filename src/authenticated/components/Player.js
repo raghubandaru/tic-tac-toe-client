@@ -7,51 +7,7 @@ import 'styled-components/macro'
 import { getAccessToken } from '../../shared/helpers/token'
 import { below } from '../../shared/utilities/Breakpoints'
 
-const Statistic = styled.span`
-  font-size: 1.3rem;
-  letter-spacing: 0.5rem;
-`
-
-const Statistics = styled.div`
-  display: flex;
-  justify-content: space-around;
-`
-
-const StyledPlayer = styled(Player)`
-  display: flex;
-  flex-direction: ${props => (props.reverse ? 'row-reverse' : 'row')};
-  padding: 2rem;
-  align-self: ${props => (props.reverse ? 'flex-end' : 'flex-start')};
-  background: #102a43;
-  ${props =>
-    props.isTurn &&
-    css`
-      border-left: 2px solid #54d1db;
-    `}
-
-  ${props =>
-    props.isWinner &&
-    css`
-      border: 2px solid #54d1db;
-    `}
-
-    ${props =>
-      props.playerStatus === 'disconnected' &&
-      css`
-        border: 2px solid red;
-      `}
-
-  img {
-    filter: grayscale(100%);
-    mix-blend-mode: multiply;
-  }
-
-  ${below.small`
-    align-self: center;
-  `}
-`
-
-function Player({ className, reverse, playerId, playerStatus }) {
+function Player({ className, reverse, playerId, totalPlayerConnections }) {
   console.log('playerId', playerId)
   const [player, setPlayer] = useState(null)
   const [total, setTotal] = useState(0)
@@ -109,12 +65,11 @@ function Player({ className, reverse, playerId, playerStatus }) {
 
   return (
     <div className={className}>
-      {playerStatus === 'disconnected' && (
+      {totalPlayerConnections === 0 ? (
         <div>
           <h2>Disconnected</h2>
         </div>
-      )}
-      {playerStatus === 'connected' && (
+      ) : (
         <>
           <div
             css={css`
@@ -158,7 +113,49 @@ Player.propTypes = {
   className: PropTypes.string.isRequired,
   reverse: PropTypes.bool,
   playerId: PropTypes.string.isRequired,
-  playerStatus: PropTypes.oneOf(['connected', 'disconnected']).isRequired
+  totalPlayerConnections: PropTypes.number
 }
 
-export default StyledPlayer
+const Statistic = styled.span`
+  font-size: 1.3rem;
+  letter-spacing: 0.5rem;
+`
+
+const Statistics = styled.div`
+  display: flex;
+  justify-content: space-around;
+`
+
+export default styled(Player)`
+display: flex;
+flex-direction: ${props => (props.reverse ? 'row-reverse' : 'row')};
+padding: 2rem;
+align-self: ${props => (props.reverse ? 'flex-end' : 'flex-start')};
+background: #102a43;
+${props =>
+  props.isTurn &&
+  css`
+    border-left: 2px solid #54d1db;
+  `}
+
+${props =>
+  props.isWinner &&
+  css`
+    border: 2px solid #54d1db;
+  `}
+
+  ${props =>
+    props.totalPlayerConnections === 0 &&
+    css`
+      border: 2px solid red;
+    `}
+
+img {
+  filter: grayscale(100%);
+  mix-blend-mode: multiply;
+}
+
+${below.small`
+  align-self: center;
+`}
+`

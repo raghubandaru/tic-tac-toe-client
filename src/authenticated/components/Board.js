@@ -4,15 +4,6 @@ import styled from 'styled-components'
 
 import Square from './Square'
 
-const StyledBoard = styled(Board)`
-  display: flex;
-  flex-direction: column;
-  margin: 2rem 0;
-  > div {
-    display: flex;
-  }
-`
-
 function Board({
   board,
   className,
@@ -60,4 +51,11 @@ Board.propTypes = {
   winningIndexes: PropTypes.array.isRequired
 }
 
-export default StyledBoard
+export default styled(Board)`
+  display: flex;
+  flex-direction: column;
+  margin: 2rem 0;
+  > div {
+    display: flex;
+  }
+`

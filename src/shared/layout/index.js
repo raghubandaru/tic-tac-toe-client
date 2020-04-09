@@ -27,6 +27,7 @@ function Layout({ children, className }) {
   const close = () => setMenuOpen(false)
 
   const handleResize = e => {
+    console.log(e.target.innerWidth)
     setInnerWidth(e.target.innerWidth)
   }
 
@@ -53,6 +54,8 @@ function Layout({ children, className }) {
       setUser(null)
     })
   }
+
+  console.log(innerWidth)
 
   return (
     <div className={className}>

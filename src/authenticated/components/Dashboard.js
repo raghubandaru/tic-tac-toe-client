@@ -42,7 +42,7 @@ function Dashboard({ newRegister, setNewRegister }) {
     axios(config)
       .then(({ data }) => {
         if (data.game) {
-          history.push(`/dashboard/${data.game._id}`)
+          history.push(`/games/${data.game._id}`)
         } else {
           setLoading(false)
         }
@@ -65,7 +65,7 @@ function Dashboard({ newRegister, setNewRegister }) {
 
     axios(config)
       .then(({ data: { updatedGame } }) => {
-        history.push(`/dashboard/${updatedGame._id}`)
+        history.push(`/games/${updatedGame._id}`)
       })
       .catch(error => {
         setError(error.response.data.error)
@@ -83,7 +83,7 @@ function Dashboard({ newRegister, setNewRegister }) {
 
     axios(config)
       .then(({ data: { game } }) => {
-        history.push(`/dashboard/${game._id}`)
+        history.push(`/games/${game._id}`)
       })
       .catch(error => console.log(error))
   }
