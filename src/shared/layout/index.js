@@ -26,13 +26,10 @@ function Layout({ children, className }) {
 
   const close = () => setMenuOpen(false)
 
-  const handleResize = e => {
-    console.log(e.target.innerWidth)
-    setInnerWidth(e.target.innerWidth)
-  }
+  const handleResize = e => setInnerWidth(e.target.innerWidth)
 
   useEffect(() => {
-    const debouncedHandleResize = () => debounce(handleResize, 300)
+    const debouncedHandleResize = debounce(handleResize, 300)
 
     window.addEventListener('resize', debouncedHandleResize)
 
@@ -54,8 +51,6 @@ function Layout({ children, className }) {
       setUser(null)
     })
   }
-
-  console.log(innerWidth)
 
   return (
     <div className={className}>
