@@ -37,7 +37,6 @@ function ResetPassword() {
     setError(null)
     axios(config)
       .then(({ data: { message } }) => {
-        console.log(message)
         setMessage(message)
         setLoading(false)
       })
@@ -77,13 +76,8 @@ function ResetPassword() {
 
     setError(null)
     axios(config)
-      .then(({ data: { message } }) => {
-        console.log(message)
-        setSuccessMessage(message)
-      })
-      .catch(error => {
-        setError(error.response.data.error)
-      })
+      .then(({ data: { message } }) => setSuccessMessage(message))
+      .catch(error => setError(error.response.data.error))
   }
 
   if (isLoading) {

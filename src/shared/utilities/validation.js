@@ -57,14 +57,6 @@ const validateResetPassword = inputs => ({
     : null
 })
 
-const validateGoal = name => ({
-  name: !isRequired(name) ? 'Goal name is required' : null
-})
-
-const validateTask = description => ({
-  description: !isRequired(description) ? 'Task description is required' : null
-})
-
 const validateJoinGame = joinGame => ({
   joinGame: !isRequired(joinGame) ? 'Code is required' : null
 })
@@ -75,10 +67,8 @@ export {
   isRequired,
   isValidEmail,
   validateForgotPassword,
-  validateGoal,
   validateJoinGame,
   validateLogin,
   validateRegister,
-  validateResetPassword,
-  validateTask
+  validateResetPassword
 }

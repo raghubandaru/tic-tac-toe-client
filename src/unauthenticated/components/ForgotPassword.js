@@ -39,10 +39,7 @@ function ForgotPassword() {
 
     setError(null)
     axios(config)
-      .then(({ data: { message } }) => {
-        console.log(message)
-        setMessage(message)
-      })
+      .then(({ data: { message } }) => setMessage(message))
       .catch(error => {
         setError(error.response.data.error)
       })

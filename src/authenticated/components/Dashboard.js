@@ -85,7 +85,7 @@ function Dashboard({ newRegister, setNewRegister }) {
       .then(({ data: { game } }) => {
         history.push(`/games/${game._id}`)
       })
-      .catch(error => console.log(error))
+      .catch(() => {})
   }
 
   if (isLoading) {

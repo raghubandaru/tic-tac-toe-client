@@ -83,7 +83,6 @@ function Gameplay({ className }) {
 
   if (game) {
     const playerTurn = game.step % 2 === 0 ? game.player1 : game.player2
-    console.log(playerTurn === userId)
 
     return (
       <>

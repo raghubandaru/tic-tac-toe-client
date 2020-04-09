@@ -31,8 +31,7 @@ function UserProvider({ children }) {
           setLoading(false)
         })
       })
-      .catch(error => {
-        console.log(error)
+      .catch(() => {
         setLoading(false)
       })
   }, [])
