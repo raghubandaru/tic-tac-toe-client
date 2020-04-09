@@ -8,11 +8,8 @@ import { getAccessToken } from '../../shared/helpers/token'
 import { below } from '../../shared/utilities/Breakpoints'
 
 function Player({ className, reverse, playerId, totalPlayerConnections }) {
-  console.log('playerId', playerId)
   const [player, setPlayer] = useState(null)
-  const [total, setTotal] = useState(0)
-  const [win, setWin] = useState(0)
-  const [draw, setDraw] = useState(0)
+  const [stats, setStats] = useState(null)
   const [isLoading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -24,37 +21,15 @@ function Player({ className, reverse, playerId, totalPlayerConnections }) {
     }
 
     const config2 = {
-      url: `${process.env.REACT_APP_API_DOMAIN}/games/stats?user=${playerId}&draw=true`,
-      headers: {
-        Authorization: `Bearer ${getAccessToken()}`
-      }
-    }
-
-    const config3 = {
-      url: `${process.env.REACT_APP_API_DOMAIN}/games/stats?user=${playerId}&winner=true`,
-      headers: {
-        Authorization: `Bearer ${getAccessToken()}`
-      }
-    }
-
-    const config4 = {
       url: `${process.env.REACT_APP_API_DOMAIN}/games/stats?user=${playerId}`,
       headers: {
         Authorization: `Bearer ${getAccessToken()}`
       }
     }
 
-    Promise.all([
-      axios(config1),
-      axios(config2),
-      axios(config3),
-      axios(config4)
-    ]).then(res => {
-      console.log(res)
-      setPlayer(res[0].data.user)
-      setDraw(res[1].data.games)
-      setWin(res[2].data.games)
-      setTotal(res[3].data.games)
+    Promise.all([axios(config1), axios(config2)]).then(response => {
+      setPlayer(response[0].data.user)
+      setStats(response[1].data.stats)
       setLoading(false)
     })
   }, [playerId])
@@ -98,9 +73,9 @@ function Player({ className, reverse, playerId, totalPlayerConnections }) {
           >
             <h2>{player.name}</h2>
             <Statistics>
-              <Statistic>{total}T</Statistic>
-              <Statistic>{win}W</Statistic>
-              <Statistic>{draw}D</Statistic>
+              <Statistic>{stats.total}T</Statistic>
+              <Statistic>{stats.win}W</Statistic>
+              <Statistic>{stats.draw}D</Statistic>
             </Statistics>
           </div>
         </>
@@ -111,8 +86,8 @@ function Player({ className, reverse, playerId, totalPlayerConnections }) {
 
 Player.propTypes = {
   className: PropTypes.string.isRequired,
-  reverse: PropTypes.bool,
   playerId: PropTypes.string.isRequired,
+  reverse: PropTypes.bool,
   totalPlayerConnections: PropTypes.number
 }
 
@@ -127,35 +102,35 @@ const Statistics = styled.div`
 `
 
 export default styled(Player)`
-display: flex;
-flex-direction: ${props => (props.reverse ? 'row-reverse' : 'row')};
-padding: 2rem;
-align-self: ${props => (props.reverse ? 'flex-end' : 'flex-start')};
-background: #102a43;
-${props =>
-  props.isTurn &&
-  css`
-    border-left: 2px solid #54d1db;
-  `}
-
-${props =>
-  props.isWinner &&
-  css`
-    border: 2px solid #54d1db;
-  `}
-
+  display: flex;
+  flex-direction: ${props => (props.reverse ? 'row-reverse' : 'row')};
+  padding: 2rem;
+  align-self: ${props => (props.reverse ? 'flex-end' : 'flex-start')};
+  background: #102a43;
   ${props =>
-    props.totalPlayerConnections === 0 &&
+    props.isTurn &&
     css`
-      border: 2px solid red;
+      border-left: 2px solid #54d1db;
     `}
 
-img {
-  filter: grayscale(100%);
-  mix-blend-mode: multiply;
-}
+  ${props =>
+    props.isWinner &&
+    css`
+      border: 2px solid #54d1db;
+    `}
 
-${below.small`
-  align-self: center;
-`}
+    ${props =>
+      props.totalPlayerConnections === 0 &&
+      css`
+        border: 2px solid red;
+      `}
+
+  img {
+    filter: grayscale(100%);
+    mix-blend-mode: multiply;
+  }
+
+  ${below.small`
+    align-self: center;
+  `}
 `
