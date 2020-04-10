@@ -58,7 +58,7 @@ function Player({ className, reverse, playerId, totalPlayerConnections }) {
             `}
           >
             <img
-              src={`http://res.cloudinary.com/raghubandaru/image/upload/v${player.avatar}`}
+              src={`https://res.cloudinary.com/raghubandaru/image/upload/v${player.avatar}`}
               alt="Avatar"
               width="100%"
             />

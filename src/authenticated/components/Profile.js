@@ -23,7 +23,7 @@ function Profile({ className }) {
           {user.avatar && (
             <div className="image-content">
               <img
-                src={`http://res.cloudinary.com/raghubandaru/image/upload/v${user.avatar}`}
+                src={`https://res.cloudinary.com/raghubandaru/image/upload/v${user.avatar}`}
                 alt="Avatar"
               />
             </div>
