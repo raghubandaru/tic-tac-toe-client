@@ -39,7 +39,7 @@ function Layout({ children, className }) {
   const handleLogout = () => {
     const config = {
       method: 'POST',
-      url: 'http://localhost:5000/users/logout',
+      url: `${process.env.REACT_APP_API_DOMAIN}/users/logout`,
       headers: {
         Authorization: `Bearer ${getAccessToken()}`
       },

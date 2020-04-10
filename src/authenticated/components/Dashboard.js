@@ -33,7 +33,7 @@ function Dashboard({ newRegister, setNewRegister }) {
 
   useEffect(() => {
     const config = {
-      url: `http://localhost:5000/games/active`,
+      url: `${process.env.REACT_APP_API_DOMAIN}/games/active`,
       headers: {
         Authorization: `Bearer ${getAccessToken()}`
       }
@@ -57,7 +57,7 @@ function Dashboard({ newRegister, setNewRegister }) {
 
     const config = {
       method: 'PATCH',
-      url: `http://localhost:5000/games/${joinGame}`,
+      url: `${process.env.REACT_APP_API_DOMAIN}/games/${joinGame}`,
       headers: {
         Authorization: `Bearer ${getAccessToken()}`
       }
@@ -75,7 +75,7 @@ function Dashboard({ newRegister, setNewRegister }) {
   const handleCreateGame = () => {
     const config = {
       method: 'POST',
-      url: 'http://localhost:5000/games',
+      url: `${process.env.REACT_APP_API_DOMAIN}/games`,
       headers: {
         Authorization: `Bearer ${getAccessToken()}`
       }
