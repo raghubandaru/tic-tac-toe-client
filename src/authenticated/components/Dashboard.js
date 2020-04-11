@@ -6,7 +6,7 @@ import { css } from 'styled-components'
 import 'styled-components/macro'
 
 import DialogUpload from './DialogUpload'
-import { ErrorMessage, Header, Main } from '../../shared/components'
+import { ErrorMessage, Header, Loading, Main } from '../../shared/components'
 import { Button, FormGroup, Input, Label } from '../../shared/elements'
 import { getAccessToken } from '../../shared/helpers/token'
 import { isError, validateJoinGame } from '../../shared/utilities/validation'
@@ -89,7 +89,7 @@ function Dashboard({ newRegister, setNewRegister }) {
   }
 
   if (isLoading) {
-    return 'Loading...'
+    return <Loading variant="insidelayout" />
   }
 
   const errors = validateJoinGame(joinGame)

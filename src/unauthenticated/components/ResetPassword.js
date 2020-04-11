@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom'
 import { css } from 'styled-components'
 import 'styled-components/macro'
 
-import { ErrorMessage } from '../../shared/components'
+import { ErrorMessage, Loading } from '../../shared/components'
 import { Button, FormGroup, Input, Label } from '../../shared/elements'
 import {
   isError,
@@ -81,7 +81,7 @@ function ResetPassword() {
   }
 
   if (isLoading) {
-    return 'Loading ...'
+    return <Loading height={230} />
   } else if (successMessage || errorMessage) {
     return (
       <div

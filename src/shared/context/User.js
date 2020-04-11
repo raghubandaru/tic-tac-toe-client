@@ -2,6 +2,7 @@ import React, { useState, useEffect, createContext, useContext } from 'react'
 import axios from 'axios'
 import PropTypes from 'prop-types'
 
+import { Loading } from '../components'
 import { setAccessToken } from '../helpers/token'
 
 const UserContext = createContext()
@@ -37,7 +38,7 @@ function UserProvider({ children }) {
   }, [])
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <Loading variant="fullheight" />
   }
 
   return (

@@ -1,16 +1,18 @@
 import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom'
+
 import App from './App'
+import Global from './Global'
+import { Loading } from './shared/components'
+import { UserProvider } from './shared/context/User'
 import * as serviceWorker from './serviceWorker'
 import 'react-image-crop/dist/ReactCrop.css'
-import Global from './Global'
-import { UserProvider } from './shared/context/User'
 
 ReactDOM.render(
   <>
     <Global />
     <UserProvider>
-      <Suspense fallback="Loading...">
+      <Suspense fallback={<Loading variant="fullheight" />}>
         <App />
       </Suspense>
     </UserProvider>

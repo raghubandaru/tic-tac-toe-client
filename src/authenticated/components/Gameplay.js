@@ -5,11 +5,11 @@ import { useParams, useHistory } from 'react-router-dom'
 import io from 'socket.io-client'
 
 import AlertModal from './AlertModal'
+import Board from './Board'
+import Player from './Player'
+import { Header, Loading, Main } from '../../shared/components'
 import { getAccessToken } from '../../shared/helpers/token'
 import { useUser } from '../../shared/context/User'
-import Player from './Player'
-import Board from './Board'
-import { Header, Main } from '../../shared/components'
 
 let socket
 
@@ -78,7 +78,7 @@ function Gameplay({ className }) {
   }
 
   if (isLoading) {
-    return 'Loading...'
+    return <Loading variant="insidelayout" />
   }
 
   if (game) {
