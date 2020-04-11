@@ -4,45 +4,52 @@ import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
 import 'styled-components/macro'
 
+import Waiting from './Waiting'
 import { getAccessToken } from '../../shared/helpers/token'
 import { below } from '../../shared/utilities/Breakpoints'
 
-function Player({ className, reverse, playerId, totalPlayerConnections }) {
+function Player({ className, playerId, reverse, totalPlayerConnections }) {
   const [player, setPlayer] = useState(null)
   const [stats, setStats] = useState(null)
   const [isLoading, setLoading] = useState(true)
 
   useEffect(() => {
-    const config1 = {
-      url: `${process.env.REACT_APP_API_DOMAIN}/users/${playerId}`,
-      headers: {
-        Authorization: `Bearer ${getAccessToken()}`
+    if (playerId) {
+      const config1 = {
+        url: `${process.env.REACT_APP_API_DOMAIN}/users/${playerId}`,
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`
+        }
       }
-    }
 
-    const config2 = {
-      url: `${process.env.REACT_APP_API_DOMAIN}/games/stats?user=${playerId}`,
-      headers: {
-        Authorization: `Bearer ${getAccessToken()}`
+      const config2 = {
+        url: `${process.env.REACT_APP_API_DOMAIN}/games/stats?user=${playerId}`,
+        headers: {
+          Authorization: `Bearer ${getAccessToken()}`
+        }
       }
-    }
 
-    Promise.all([axios(config1), axios(config2)]).then(response => {
-      setPlayer(response[0].data.user)
-      setStats(response[1].data.stats)
-      setLoading(false)
-    })
+      Promise.all([axios(config1), axios(config2)]).then(response => {
+        setPlayer(response[0].data.user)
+        setStats(response[1].data.stats)
+        setLoading(false)
+      })
+    }
   }, [playerId])
 
-  if (isLoading) {
-    return 'Loading...'
+  if (!playerId || isLoading) {
+    return (
+      <div className={className}>
+        <Waiting height={60} />
+      </div>
+    )
   }
 
   return (
     <div className={className}>
       {totalPlayerConnections === 0 ? (
         <div>
-          <h2>Disconnected</h2>
+          <Waiting status="Reconnect" />
         </div>
       ) : (
         <>
@@ -73,8 +80,8 @@ function Player({ className, reverse, playerId, totalPlayerConnections }) {
           >
             <h2>{player.name}</h2>
             <Statistics>
-              <Statistic>{stats.total}T</Statistic>
-              <Statistic>{stats.win}W</Statistic>
+              <Statistic>{stats.total}T-</Statistic>
+              <Statistic>{stats.win}W-</Statistic>
               <Statistic>{stats.draw}D</Statistic>
             </Statistics>
           </div>
@@ -86,7 +93,7 @@ function Player({ className, reverse, playerId, totalPlayerConnections }) {
 
 Player.propTypes = {
   className: PropTypes.string.isRequired,
-  playerId: PropTypes.string.isRequired,
+  playerId: PropTypes.string,
   reverse: PropTypes.bool,
   totalPlayerConnections: PropTypes.number
 }
@@ -98,7 +105,6 @@ const Statistic = styled.span`
 
 const Statistics = styled.div`
   display: flex;
-  justify-content: space-around;
 `
 
 export default styled(Player)`
@@ -107,6 +113,7 @@ export default styled(Player)`
   padding: 2rem;
   align-self: ${props => (props.reverse ? 'flex-end' : 'flex-start')};
   background: #102a43;
+
   ${props =>
     props.isTurn &&
     css`
@@ -122,7 +129,13 @@ export default styled(Player)`
     ${props =>
       props.totalPlayerConnections === 0 &&
       css`
-        border: 2px solid red;
+        border: 2px solid #d64545;
+      `}
+
+    ${props =>
+      !props.playerId &&
+      css`
+        border: 2px solid #54d1db;
       `}
 
   img {

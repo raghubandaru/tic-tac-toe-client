@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { useParams, useHistory } from 'react-router-dom'
 import io from 'socket.io-client'
+import styled, { css } from 'styled-components'
+import 'styled-components/macro'
 
 import AlertModal from './AlertModal'
 import Board from './Board'
 import Player from './Player'
-import { Header, Loading, Main } from '../../shared/components'
+import { Loading, Main } from '../../shared/components'
 import { getAccessToken } from '../../shared/helpers/token'
 import { useUser } from '../../shared/context/User'
+import { below } from '../../shared/utilities/Breakpoints'
 
 let socket
 
@@ -85,11 +87,19 @@ function Gameplay({ className }) {
     const playerTurn = game.step % 2 === 0 ? game.player1 : game.player2
 
     return (
-      <>
-        <Header
-          title="Gameplay"
-          quote="Line up X or O horizontally, vertically or diagonally"
-        />
+      <div
+        css={css`
+          margin-top: 6rem;
+
+          ${below.med`
+            margin-top: 4rem;
+          `}
+
+          ${below.small`
+            margin-top: 2rem;
+          `}
+        `}
+      >
         <Main>
           <div className={className}>
             <Player
@@ -104,23 +114,19 @@ function Gameplay({ className }) {
               board={game.board}
               winningIndexes={game.winningIndexes}
             />
-            {game.player2 ? (
-              <Player
-                isTurn={game.player2 === playerTurn && game.status === 'active'}
-                isWinner={game.winner === game.player2}
-                playerId={game.player2}
-                totalPlayerConnections={game.player2Connections.length}
-                reverse={true}
-              />
-            ) : (
-              'Loading...'
-            )}
+            <Player
+              isTurn={game.player2 === playerTurn && game.status === 'active'}
+              isWinner={game.winner === game.player2}
+              playerId={game.player2}
+              totalPlayerConnections={game.player2Connections.length}
+              reverse={true}
+            />
             {showDialog && (
               <AlertModal setShowDialog={setShowDialog} code={game.code} />
             )}
           </div>
         </Main>
-      </>
+      </div>
     )
   } else {
     return null

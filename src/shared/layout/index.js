@@ -119,7 +119,7 @@ export default styled(Layout)`
 
   .pullright {
     & > * {
-      margin-left: 2rem;
+      margin-left: 1rem;
 
       ${below.med`
         margin-left: 1rem;
