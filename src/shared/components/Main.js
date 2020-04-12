@@ -8,11 +8,11 @@ export const Main = styled.main`
   padding: 6rem;
   width: 100%;
 
-  ${below.small`
-    padding: 2rem;
-  `}
-
   ${below.med`
     padding: 4rem;
+  `}
+
+  ${below.small`
+    padding: 4rem 1rem;
   `}
 `

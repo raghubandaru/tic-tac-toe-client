@@ -57,7 +57,7 @@ function Layout({ children, className }) {
       <WrapperHead>
         <Container>
           <Nav>
-            <Logo>Tic Tac Toe</Logo>
+            <Logo>TicTacToe</Logo>
             {user ? (
               innerWidth > 600 ? (
                 <div className="pullright">
