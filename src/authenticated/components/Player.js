@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
 import 'styled-components/macro'
 
-import Waiting from './Waiting'
+import Connection from './Connection'
 import { getAccessToken } from '../../shared/helpers/token'
 import { below } from '../../shared/utilities/Breakpoints'
 
@@ -37,10 +37,18 @@ function Player({ className, playerId, reverse, totalPlayerConnections }) {
     }
   }, [playerId])
 
-  if (!playerId || isLoading) {
+  if (!playerId) {
     return (
       <div className={className}>
-        <Waiting height={60} />
+        <Connection status="Waiting" />
+      </div>
+    )
+  }
+
+  if (isLoading) {
+    return (
+      <div className={className}>
+        <Connection status="Loading" />
       </div>
     )
   }
@@ -49,7 +57,7 @@ function Player({ className, playerId, reverse, totalPlayerConnections }) {
     <div className={className}>
       {totalPlayerConnections === 0 ? (
         <div>
-          <Waiting status="Reconnect" />
+          <Connection status="Reconnecting" />
         </div>
       ) : (
         <>
