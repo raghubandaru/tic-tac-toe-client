@@ -72,9 +72,22 @@ function Gameplay({ className }) {
   }, [ENDPOINT, accessToken, history, id, userId])
 
   const handleBoardClick = index => {
+    let value
+
     if (game.board[index]) {
       return
     }
+
+    game.step % 2 === 0 ? (value = 'X') : (value = 'O')
+
+    setGame({
+      ...game,
+      board: [
+        ...game.board.slice(0, index),
+        value,
+        ...game.board.slice(index + 1)
+      ]
+    })
 
     socket.emit('click', { gameId: id, index })
   }
@@ -89,14 +102,10 @@ function Gameplay({ className }) {
     return (
       <div
         css={css`
-          margin-top: 6rem;
-
-          ${below.med`
-            margin-top: 4rem;
-          `}
+          margin-top: 8vh;
 
           ${below.small`
-            margin-top: 2rem;
+            margin-top: 5vh;
           `}
         `}
       >
