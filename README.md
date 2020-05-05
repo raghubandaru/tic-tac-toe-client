@@ -10,7 +10,7 @@ Exploring WebSockets is fun and powerful. There are genuine use cases for it to 
 I chose to develop a minimal web app based on Socket.io. Users can create a game or join the game started by someone with
 the generated code. Happy playing!
 
-##### User Interface Technical Skills
+### User Interface Technical Skills
 
 - User Interface is developed using React.js.
 - Real-time communication is setup using Socket.io client.
