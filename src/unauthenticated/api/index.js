@@ -1,3 +1,5 @@
+export * from './verifyToken'
 export * from './forgotPassword'
 export * from './loginUser'
 export * from './registerUser'
+export * from './resetPassword'

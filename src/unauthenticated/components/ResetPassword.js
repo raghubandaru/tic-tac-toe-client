@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { css } from 'styled-components'
 import 'styled-components/macro'
 
+import { resetPassword, verifyToken } from '../api'
 import { ErrorMessage, Loading } from '../../shared/components'
 import { Button, FormGroup, Input, Label } from '../../shared/elements'
 import {
@@ -26,25 +26,24 @@ function ResetPassword() {
     confirmPassword: false
   })
 
-  const { userId, resetToken } = useParams()
+  const { resetToken, userId } = useParams()
+
+  const verify = useCallback(async () => {
+    try {
+      const {
+        data: { message }
+      } = await verifyToken(resetToken, userId)
+      setMessage(message)
+      setLoading(false)
+    } catch (error) {
+      setErrorMessage(error.response.data.error)
+      setLoading(false)
+    }
+  }, [resetToken, userId])
 
   useEffect(() => {
-    const url = `${process.env.REACT_APP_API_DOMAIN}/users/reset_password/${userId}/${resetToken}`
-    const config = {
-      url
-    }
-
-    setError(null)
-    axios(config)
-      .then(({ data: { message } }) => {
-        setMessage(message)
-        setLoading(false)
-      })
-      .catch(error => {
-        setErrorMessage(error.response.data.error)
-        setLoading(false)
-      })
-  }, [resetToken, userId])
+    verify()
+  }, [verify])
 
   const handleChange = e => {
     const fieldName = e.target.name
@@ -59,29 +58,27 @@ function ResetPassword() {
     setTouched({ ...touched, [fieldName]: true })
   }
 
-  const handleChangePassword = e => {
+  const handleChangePassword = async e => {
     e.preventDefault()
     // Check whether errors exist in form
     if (isError(errors)) {
       return
     }
 
-    const url = `${process.env.REACT_APP_API_DOMAIN}/users/reset_password/change_password`
-    const data = { ...details, userId }
-    const config = {
-      method: 'POST',
-      url,
-      data
-    }
-
     setError(null)
-    axios(config)
-      .then(({ data: { message } }) => setSuccessMessage(message))
-      .catch(error => setError(error.response.data.error))
+
+    try {
+      const {
+        data: { message }
+      } = await resetPassword({ ...details, userId })
+      setSuccessMessage(message)
+    } catch (error) {
+      setError(error.response.data.error)
+    }
   }
 
   if (isLoading) {
-    return <Loading height={230} />
+    return <Loading size={50} height={230} />
   } else if (successMessage || errorMessage) {
     return (
       <div
