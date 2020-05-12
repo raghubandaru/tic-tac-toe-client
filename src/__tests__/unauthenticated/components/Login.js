@@ -4,35 +4,19 @@ import { axe } from 'jest-axe'
 import { BrowserRouter } from 'react-router-dom'
 
 import { UserContext } from '../../../shared/context/User'
-import { dirty, enterValidDetails } from '../../../shared/utilities/tests'
+import {
+  dirty,
+  enterValidDetails,
+  testData
+} from '../../../shared/utilities/tests'
 import { loginUser as mockLoginUser } from '../../../unauthenticated/api'
 import { Login } from '../../../unauthenticated/components'
 
 jest.mock('../../../unauthenticated/api')
 
-let container,
-  testData,
-  email,
-  password,
-  login,
-  getByLabelText,
-  getByText,
-  queryByText
+let container, email, password, login, getByLabelText, getByText, queryByText
 
 beforeEach(() => {
-  testData = {
-    name: 'Test',
-    email: 'test@test.com',
-    password: 'test'
-  }
-
-  mockLoginUser.mockResolvedValueOnce({
-    data: {
-      accessToken: 'jwt-access-token',
-      user: { name: testData.name, email: testData.email }
-    }
-  })
-
   let query = render(
     <UserContext.Provider
       value={{
@@ -86,6 +70,13 @@ test('should render valid error messages after inputs are dirty and clear after 
 })
 
 test('should submit form successfully with valid data', async () => {
+  mockLoginUser.mockResolvedValueOnce({
+    data: {
+      accessToken: 'jwt-access-token',
+      user: { name: testData.name, email: testData.email }
+    }
+  })
+
   enterValidDetails(email, testData.email)
   enterValidDetails(password, testData.password)
 

@@ -4,14 +4,17 @@ import { axe } from 'jest-axe'
 import { BrowserRouter } from 'react-router-dom'
 
 import { UserContext } from '../../../shared/context/User'
-import { dirty, enterValidDetails } from '../../../shared/utilities/tests'
+import {
+  dirty,
+  enterValidDetails,
+  testData
+} from '../../../shared/utilities/tests'
 import { registerUser as mockRegisterUser } from '../../../unauthenticated/api'
 import { Register } from '../../../unauthenticated/components'
 
 jest.mock('../../../unauthenticated/api')
 
 let container,
-  testData,
   setNewRegister,
   name,
   email,
@@ -22,19 +25,6 @@ let container,
   queryByText
 
 beforeEach(() => {
-  testData = {
-    name: 'Test',
-    email: 'test@test.com',
-    password: 'test'
-  }
-
-  mockRegisterUser.mockResolvedValueOnce({
-    data: {
-      accessToken: 'jwt-access-token',
-      user: { name: testData.name, email: testData.email }
-    }
-  })
-
   setNewRegister = jest.fn()
 
   let query = render(
@@ -97,6 +87,13 @@ test('should render valid error messages after inputs are dirty and clear after 
 })
 
 test('should submit form successfully with valid data', async () => {
+  mockRegisterUser.mockResolvedValueOnce({
+    data: {
+      accessToken: 'jwt-access-token',
+      user: { name: testData.name, email: testData.email }
+    }
+  })
+
   enterValidDetails(name, testData.name)
   enterValidDetails(email, testData.email)
   enterValidDetails(password, testData.password)

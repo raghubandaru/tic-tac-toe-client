@@ -8,7 +8,14 @@ import {
 import { axe } from 'jest-axe'
 import { BrowserRouter } from 'react-router-dom'
 
-import { dirty, enterValidDetails } from '../../../shared/utilities/tests'
+import {
+  dirty,
+  enterValidDetails,
+  testInitialData,
+  testAfterSubmissionData,
+  testPasswordData,
+  testWrongPasswordData
+} from '../../../shared/utilities/tests'
 import {
   resetPassword as mockResetPassword,
   verifyToken as mockVerifyToken
@@ -17,46 +24,12 @@ import { ResetPassword } from '../../../unauthenticated/components'
 
 jest.mock('../../../unauthenticated/api')
 
-let testInitialData,
-  testAfterSubmissionData,
-  testPasswordData,
-  testWrongPasswordData,
-  container,
-  password,
-  confirmPassword,
-  getByLabelText,
-  getByText,
-  queryByText,
-  submit
+let container, password, confirmPassword, getByLabelText, queryByText, submit
 
 beforeEach(async () => {
-  testInitialData = {
-    message: 'Please check email'
-  }
-
-  testAfterSubmissionData = {
-    message: 'Password reset success'
-  }
-
-  testPasswordData = {
-    password: 'test',
-    confirmPassword: 'test'
-  }
-
-  testWrongPasswordData = {
-    password: 'test',
-    confirmPassword: 'other'
-  }
-
   mockVerifyToken.mockResolvedValueOnce({
     data: {
       message: testInitialData.message
-    }
-  })
-
-  mockResetPassword.mockResolvedValueOnce({
-    data: {
-      message: testAfterSubmissionData.message
     }
   })
 
@@ -67,15 +40,13 @@ beforeEach(async () => {
   )
 
   getByLabelText = query.getByLabelText
-  getByText = query.getByText
   queryByText = query.queryByText
   container = query.container
 
-  await waitForElement(() => queryByText(/submit/i))
+  submit = await waitForElement(() => queryByText(/submit/i))
 
   password = getByLabelText(/^password/i, { selector: 'input' })
   confirmPassword = getByLabelText(/confirm password/i)
-  submit = getByText(/submit/i)
 })
 
 afterEach(() => {
@@ -119,6 +90,12 @@ test('should render form submit in disabled state if passwords donot match', () 
 })
 
 test('should submit form successfully with valid data and change in UI', async () => {
+  mockResetPassword.mockResolvedValueOnce({
+    data: {
+      message: testAfterSubmissionData.message
+    }
+  })
+
   enterValidDetails(password, testPasswordData.password)
   enterValidDetails(confirmPassword, testPasswordData.confirmPassword)
 

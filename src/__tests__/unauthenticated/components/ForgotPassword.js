@@ -7,25 +7,19 @@ import {
 } from '@testing-library/react'
 import { axe } from 'jest-axe'
 
-import { dirty, enterValidDetails } from '../../../shared/utilities/tests'
+import {
+  dirty,
+  enterValidDetails,
+  testData
+} from '../../../shared/utilities/tests'
 import { forgotPassword as mockForgotPassword } from '../../../unauthenticated/api'
 import { ForgotPassword } from '../../../unauthenticated/components'
 
 jest.mock('../../../unauthenticated/api')
 
-let container, testData, email, send, getByLabelText, getByText, queryByText
+let container, email, send, getByLabelText, getByText, queryByText
 
 beforeEach(() => {
-  testData = {
-    email: 'test@test.com'
-  }
-
-  mockForgotPassword.mockResolvedValueOnce({
-    data: {
-      message: 'Password Reset Success'
-    }
-  })
-
   let query = render(<ForgotPassword />)
 
   getByLabelText = query.getByLabelText
@@ -61,6 +55,12 @@ test('should render valid error messages after inputs are dirty and clear after 
 })
 
 test('should submit form successfully with valid data and change in UI', async () => {
+  mockForgotPassword.mockResolvedValueOnce({
+    data: {
+      message: 'Password Reset Success'
+    }
+  })
+
   enterValidDetails(email, testData.email)
 
   fireEvent.click(send)
