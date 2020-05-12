@@ -54,4 +54,4 @@ UserProvider.propTypes = {
   children: PropTypes.element.isRequired
 }
 
-export { UserProvider, useUser }
+export { UserProvider, UserContext, useUser }

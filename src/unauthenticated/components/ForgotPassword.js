@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import axios from 'axios'
 import { css } from 'styled-components'
 import 'styled-components/macro'
 
+import { forgotPassword } from '../api'
 import { ErrorMessage } from '../../shared/components'
 import { Button, FormGroup, Input, Label } from '../../shared/elements'
 import {
@@ -22,27 +22,23 @@ function ForgotPassword() {
     setTouched({ ...touched, [fieldName]: true })
   }
 
-  const handleForgotPassword = e => {
+  const handleForgotPassword = async e => {
     e.preventDefault()
     // Check whether errors exist in form
     if (isError(errors)) {
       return
     }
 
-    const url = `${process.env.REACT_APP_API_DOMAIN}/users/reset_password/generate_token`
-    const data = { email }
-    const config = {
-      method: 'POST',
-      url,
-      data
-    }
-
     setError(null)
-    axios(config)
-      .then(({ data: { message } }) => setMessage(message))
-      .catch(error => {
-        setError(error.response.data.error)
-      })
+
+    try {
+      const {
+        data: { message }
+      } = await forgotPassword({ email })
+      setMessage(message)
+    } catch (error) {
+      setError(error.response.data.error)
+    }
   }
 
   const errors = validateForgotPassword(email)

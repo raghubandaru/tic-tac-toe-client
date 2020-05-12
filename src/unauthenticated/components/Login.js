@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
 
+import { loginUser } from '../api'
 import { ErrorMessage } from '../../shared/components'
-import { setAccessToken } from '../../shared/helpers/token'
 import { useUser } from '../../shared/context/User'
 import {
   Button,
@@ -12,12 +11,12 @@ import {
   Label,
   ButtonGroup
 } from '../../shared/elements'
+import { setAccessToken } from '../../shared/helpers/token'
 import { isError, validateLogin } from '../../shared/utilities/validation'
 
 function Login() {
-  const [details, setDetails] = useState({ name: '', email: '', password: '' })
+  const [details, setDetails] = useState({ email: '', password: '' })
   const [touched, setTouched] = useState({
-    name: false,
     email: false,
     password: false
   })
@@ -38,31 +37,24 @@ function Login() {
     setTouched({ ...touched, [fieldName]: true })
   }
 
-  const handleLogin = e => {
+  const handleLogin = async e => {
     e.preventDefault()
     // Check whether errors exist in form
     if (isError(errors)) {
       return
     }
 
-    const url = `${process.env.REACT_APP_API_DOMAIN}/users/login`
-    const data = details
-    const config = {
-      method: 'POST',
-      url,
-      data,
-      withCredentials: true
-    }
-
     setError(null)
-    axios(config)
-      .then(({ data: { user, accessToken } }) => {
-        setAccessToken(accessToken)
-        setUser(user)
-      })
-      .catch(error => {
-        setError(error.response.data.error)
-      })
+
+    try {
+      const {
+        data: { accessToken, user }
+      } = await loginUser(details)
+      setAccessToken(accessToken)
+      setUser(user)
+    } catch (error) {
+      setError(error.response.data.error)
+    }
   }
 
   const errors = validateLogin(details)
